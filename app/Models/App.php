@@ -28,14 +28,14 @@ class App extends Model
     protected static function booted()
     {
         static::creating(function ($app) {
-            if (empty($app->edit_id)) {
-                $app->edit_id = (string) \Illuminate\Support\Str::uuid();
+            if (empty($app->app_id)) {
+                $app->app_id = (string) \Illuminate\Support\Str::uuid();
             }
         });
     }
 
     public function keys()
     {
-        return $this->hasMany(Key::class, 'app_id', 'edit_id');
+        return $this->hasMany(Key::class, 'app_id', 'app_id');
     }
 }

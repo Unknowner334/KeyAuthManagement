@@ -35,4 +35,63 @@ class AuthController extends Controller
 
         return back()->withErrors(['username' => $errorMessage,])->onlyInput('username');
     }
+    
+    public function LogoutPost(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $successMessage = Config::get('messages.success.logged_out');
+
+        return redirect('/login')->with('msgSuccess', $successMessage);
+    }
+
+    public function RegisterView() {
+        return view('Auth.register');
+    }
+
+    public function RegisterPost(Request $request) {
+        $successMessage = Config::get('messages.success.register_success');
+        $errorMessage = Config::get('messages.error.register_fail');
+
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'username' => 'required|string|unique:users,username|max:50',
+            'password' => 'required|string|confirmed|max:50|min:6',
+            'reff' => 'required|string|max:50',
+        ]);
+
+        $referrable = $request->input('reff');
+
+        $reff = Reff::where('code', $referrable)->first();
+
+        if (!$reff) {
+            return back()->withErrors([
+                'username' => $errorMessage,
+            ])->onlyInput('username');
+        }
+
+        $name = $request->input('name');
+        $username = $request->input('username');
+        $password = $request->input('password');
+        $reffCode = $reff->code;
+
+        try {
+            User::create([
+                'name'     => $name,
+                'username' => $username,
+                'password' => $password,
+                'reff'     => $reffCode,
+            ]);
+            return redirect()->intended('register')
+                ->with('msgSuccess', $successMessage);
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'username' => $errorMessage,
+            ])->onlyInput('username');
+        }
+
+        return back()->withErrors([
+            'username' => $errorMessage,
+        ])->onlyInput('username');
+    }
 }
