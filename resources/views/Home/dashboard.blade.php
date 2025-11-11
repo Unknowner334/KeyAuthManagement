@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @php
-    use App\Http\Controllers\DashController;
+    use App\Http\Controllers\Controller;
 @endphp
 
 @section('content')
@@ -23,7 +23,7 @@
                                         <tr>
                                             <td><span class="align-middle badge text-dark">{{ $loop->iteration }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $key->app->name }}</span></td>
-                                            <td><span class="align-middle badge text-dark">{{ DashController::censorText($key->key) }}</span></td>
+                                            <td><span class="align-middle badge text-dark">{{ Controller::censorText($key->key) }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $key->duration }} Days</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $key->rank }}</span></td>
                                             <td><span class="align-middle badge text-primary">{{ $key->max_devices }} Devices</span></td>
@@ -51,7 +51,7 @@
                                     @foreach ($apps as $app)
                                         <tr>
                                             <td><span class="align-middle badge text-dark">{{ $loop->iteration }}</span></td>
-                                            <td><span class="align-middle badge text-dark">{{ DashController::censorText($app->app_id) }}</span></td>
+                                            <td><span class="align-middle badge text-dark">{{ Controller::censorText($app->app_id) }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $app->name }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $app->ppd_basic }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $app->ppd_premium }}</span></td>

@@ -27,6 +27,7 @@ Route::post('/settings/password-change', [SettingController::class, 'SettingsPas
 
 // * Apps
 Route::get('/apps', [AppController::class, 'AppListView'])->name('apps')->middleware('auth');
+Route::get('/apps/{id}', [AppController::class, 'AppEditView'])->where('id', '[0-9a-fA-F-]{36}')->name('apps.edit')->middleware('auth');
 
 // ! Fallback
 Route::fallback(function () {return view('errors.fallback');});

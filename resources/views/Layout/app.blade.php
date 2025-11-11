@@ -18,6 +18,10 @@
         .key-sensi {
             filter: blur(6px);
         }
+
+        .pagination .page-item:first-child .page-link {
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
