@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\KeyController;
 
 // * Login
 Route::get('/login', [AuthController::class, 'LoginView'])->name('login');
@@ -31,7 +32,17 @@ Route::get('/apps/{id}', [AppController::class, 'AppEditView'])->where('id', '[0
 Route::get('/apps/generate', [AppController::class, 'AppGenerateView'])->name('apps.generate')->middleware('auth');
 Route::post('/apps/update', [AppController::class, 'AppEditPost'])->name('apps.edit.post')->middleware('auth');
 Route::post('/apps/delete', [AppController::class, 'AppDelete'])->name('apps.delete')->middleware('auth');
+Route::post('/apps/delete/keys', [AppController::class, 'AppDeleteKeys'])->name('apps.delete.keys')->middleware('auth');
+Route::post('/apps/delete/keys/me', [AppController::class, 'AppDeleteKeysMe'])->name('apps.delete.keys.me')->middleware('auth');
 Route::post('/apps/generate', [AppController::class, 'AppGeneratePost'])->name('apps.generate.post')->middleware('auth');
+
+// * Keys
+Route::get('/keys', [KeyController::class, 'KeyListView'])->name('keys')->middleware('auth');
+Route::get('/keys/{id}', [KeyController::class, 'KeyEditView'])->where('id', '[0-9a-fA-F-]{36}')->name('keys.edit')->middleware('auth');
+Route::get('/keys/generate', [KeyController::class, 'KeyGenerateView'])->name('keys.generate')->middleware('auth');
+Route::post('/keys/update', [KeyController::class, 'KeyEditPost'])->name('keys.edit.post')->middleware('auth');
+Route::post('/keys/delete', [KeyController::class, 'KeyDelete'])->name('keys.delete')->middleware('auth');
+Route::post('/keys/generate', [KeyController::class, 'KeyGeneratePost'])->name('keys.generate.post')->middleware('auth');
 
 // ! Fallback
 Route::fallback(function () {return view('errors.fallback');});

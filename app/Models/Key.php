@@ -36,11 +36,15 @@ class Key extends Model
                 $key->edit_id = (string) Str::uuid();
             }
         });
+
+        /*static::deleting(function ($key) {
+            $key->histories()->delete();
+        });*/
     }
     
     public function app()
     {
-        return $this->belongsTo(App::class, 'app_id', 'edit_id');
+        return $this->belongsTo(App::class, 'app_id', 'app_id');
     }
 
     /*public function histories()

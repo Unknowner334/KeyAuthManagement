@@ -11,11 +11,18 @@ class AppController extends Controller
 {
     public function AppListView() {
         $apps = App::paginate(10);
+        $currency = Config::get('messages.settings.currency');
 
-        return view('App.list', compact('apps'));
+        return view('App.list', compact('apps', 'currency'));
     }
 
     public function AppGenerateView() {
+        $errorMessage = Config::get('messages.error.validation');
+
+        if (auth()->user()->permissions == "Admin") {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202, Access Forbidden', $errorMessage),])->onlyInput('name');
+        }
+
         return view('App.generate');
     }
 
@@ -23,11 +30,15 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.created');
         $errorMessage = Config::get('messages.error.validation');
 
+        if (auth()->user()->permissions == "Admin") {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202, Access Forbidden', $errorMessage),])->onlyInput('name');
+        }
+
         $request->validate([
-            'name' => 'required|string|unique:apps,name|min:6|max:50',
-            'basic' => 'required|integer|min:1|max:300000',
+            'name'    => 'required|string|unique:apps,name|min:6|max:50',
+            'basic'   => 'required|integer|min:1|max:300000',
             'premium' => 'required|integer|min:1|max:300000',
-            'status' => 'required|in:Active,Inactive',
+            'status'  => 'required|in:Active,Inactive',
         ]);
 
         try {
@@ -54,6 +65,10 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.updated');
         $errorMessage = Config::get('messages.error.validation');
 
+        if (auth()->user()->permissions == "Admin") {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202, Access Forbidden', $errorMessage),])->onlyInput('name');
+        }
+
         $request->validate([
             'edit_id' => 'required|string|min:10|max:36',
         ]);
@@ -61,23 +76,23 @@ class AppController extends Controller
         $app = App::where('edit_id', $request->input('edit_id'))->firstOrFail();
 
         $request->validate([
-            'id' => [
+            'id'      => [
                 'required',
                 'string',
                 'min:10',
                 'max:36',
                 Rule::unique('apps', 'app_id')->ignore($app->edit_id, 'edit_id')
             ],
-            'name' => [
+            'name'    => [
                 'required',
                 'string',
                 'min:6',
                 'max:50',
                 Rule::unique('apps', 'name')->ignore($app->edit_id, 'edit_id')
             ],
-            'basic' => 'required|integer|min:250|max:300000',
+            'basic'   => 'required|integer|min:250|max:300000',
             'premium' => 'required|integer|min:250|max:300000',
-            'status' => 'required|in:Active,Inactive',
+            'status'  => 'required|in:Active,Inactive',
         ]);
 
         try {
@@ -99,6 +114,10 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.deleted');
         $errorMessage = Config::get('messages.error.validation');
 
+        if (auth()->user()->permissions == "Admin") {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202, Access Forbidden', $errorMessage),])->onlyInput('name');
+        }
+
         $request->validate([
             'edit_id' => 'required|string|min:10|max:36',
         ]);
@@ -109,6 +128,48 @@ class AppController extends Controller
             $app->delete();
 
             return redirect()->route('apps')->with('msgSuccess', str_replace(':flag', "App " . $name, $successMessage));
+        } catch (\Exception $e) {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+        }
+    }
+
+    public function AppDeleteKeys(Request $request) {
+        $successMessage = Config::get('messages.success.deleted');
+        $errorMessage = Config::get('messages.error.validation');
+
+        if (auth()->user()->permissions == "Admin") {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202, Access Forbidden', $errorMessage),])->onlyInput('name');
+        }
+
+        $request->validate([
+            'edit_id' => 'required|string|min:10|max:36',
+        ]);
+
+        try {
+            $app = App::where('edit_id', $request->input('edit_id'))->firstOrFail();
+            $name = $app->name;
+            $app->keys()->delete();
+
+            return redirect()->route('apps')->with('msgSuccess', str_replace(':flag', "App " . $name . "'s Keys", $successMessage));
+        } catch (\Exception $e) {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+        }
+    }
+
+    public function AppDeleteKeysMe(Request $request) {
+        $successMessage = Config::get('messages.success.deleted');
+        $errorMessage = Config::get('messages.error.validation');
+
+        $request->validate([
+            'edit_id' => 'required|string|min:10|max:36',
+        ]);
+
+        try {
+            $app = App::where('edit_id', $request->input('edit_id'))->firstOrFail();
+            $name = $app->name;
+            $app->keys()->where('created_by', auth()->user()->username)->delete();
+
+            return redirect()->route('apps')->with('msgSuccess', str_replace(':flag', "App " . $name . "'s Keys", $successMessage));
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
         }

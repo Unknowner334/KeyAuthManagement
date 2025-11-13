@@ -3,7 +3,7 @@
 @section('title', 'Apps')
 
 @section('content')
-    <div class="col-lg-6">
+    <div class="col-lg-7">
         @include('Layout.msgStatus')
         <div class="card mb-5">
             <div class="card-header text-bg-danger">
@@ -39,8 +39,8 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option value="">-- Select Status --</option>
-                                    <option value="Active" @if ($app->status == 'Active') selected @endif>Active</option>
-                                    <option value="Inactive" @if ($app->status == 'Inactive') selected @endif>Inactive</option>
+                                    <option value="Active" class="text-success" @if ($app->status == 'Active') selected @endif>Active</option>
+                                    <option value="Inactive" class="text-danger" @if ($app->status == 'Inactive') selected @endif>Inactive</option>
                                 </select>
                             </div>
                         </div>
@@ -63,12 +63,24 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal"><i class="bi bi-plus-square"></i> Update</button>
+                        <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal"><i class="bi bi-plus-square"></i> Update</button>
 
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="bi bi-trash3"></i> Delete</button>
+                        <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="bi bi-trash3"></i> Delete</button>
+
+                        <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteKeysModal"><i class="bi bi-trash3"></i> Delete Only Keys</button>
+                        
+                        <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteKeysMeModal"><i class="bi bi-trash3"></i> Delete Only User Keys</button>
                     </div>
                 </form>
                 <form action={{ route('apps.delete') }} method="post" id="deleteForm">
+                    @csrf
+                    <input type="hidden" name="edit_id" id="edit_id" required value="{{ $app->edit_id }}">
+                </form>
+                <form action={{ route('apps.delete.keys') }} method="post" id="deleteKeysForm">
+                    @csrf
+                    <input type="hidden" name="edit_id" id="edit_id" required value="{{ $app->edit_id }}">
+                </form>
+                <form action={{ route('apps.delete.keys.me') }} method="post" id="deleteKeysMeForm">
                     @csrf
                     <input type="hidden" name="edit_id" id="edit_id" required value="{{ $app->edit_id }}">
                 </form>
@@ -112,6 +124,42 @@
         </div>
     </div>
 
+    <div class="modal fade" id="confirmDeleteKeysModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-danger">
+                    <h5 class="modal-title">Confirm Delete Keys</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the app keys?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteKeysBtn">Yes, Delete Keys</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmDeleteKeysMeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-danger">
+                    <h5 class="modal-title">Confirm Delete Keys</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the app keys that are created by your user?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteKeysMeBtn">Yes, Delete Keys</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.getElementById('confirmUpdateBtn').addEventListener('click', function() {
             document.getElementById('updateForm').submit();
@@ -119,6 +167,14 @@
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             document.getElementById('deleteForm').submit();
+        });
+
+        document.getElementById('confirmDeleteKeysBtn').addEventListener('click', function() {
+            document.getElementById('deleteKeysForm').submit();
+        });
+
+        document.getElementById('confirmDeleteKeysMeBtn').addEventListener('click', function() {
+            document.getElementById('deleteKeysMeForm').submit();
         });
     </script>
 @endsection

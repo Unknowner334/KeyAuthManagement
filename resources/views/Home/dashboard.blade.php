@@ -26,7 +26,6 @@
                                             <td><span class="align-middle badge text-{{ Controller::statusColor($key->status) }}">{{ Controller::censorText($key->key) }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ $key->duration }} Days</span></td>
                                             <td><span class="align-middle badge text-dark">{{ Controller::timeElapsed($key->created_at) }}</span></td>
-                                            <td><span class="align-middle badge text-primary">{{ $key->max_devices }} Devices</span></td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -56,8 +55,8 @@
                                         <tr>
                                             <td><span class="align-middle badge text-dark">{{ $loop->iteration }}</span></td>
                                             <td><span class="align-middle badge text-{{ Controller::statusColor($app->status) }}">{{ $app->name }}</span></td>
-                                            <td><span class="align-middle badge text-dark">{{ $app->ppd_basic }}</span></td>
-                                            <td><span class="align-middle badge text-dark">{{ $app->ppd_premium }}</span></td>
+                                            <td><span class="align-middle badge text-dark">{{ number_format($app->ppd_basic) }}{{ $currency }}</span></td>
+                                            <td><span class="align-middle badge text-dark">{{ number_format($app->ppd_premium) }}{{ $currency }}</span></td>
                                             <td><span class="align-middle badge text-dark">{{ Controller::timeElapsed($app->created_at) }}</span></td>
                                         </tr>
                                     @endforeach

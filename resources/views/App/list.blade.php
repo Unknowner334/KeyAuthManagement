@@ -30,17 +30,26 @@
                             <th><span class="align-middle badge text-dark fs-6">Basic</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Premium</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Created</span></th>
+                            <th><span class="align-middle badge text-dark fs-6">Keys Count</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Action</span></th>
                         </tr>
                         @if ($apps->isNotEmpty())
                             @foreach ($apps as $app)
+                                @php
+                                    $keysCount = 0;
+
+                                    foreach($app->keys as $key) {
+                                        $keysCount += 1;
+                                    }
+                                @endphp
                                 <tr>
                                     <td><span class="align-middle badge text-dark fs-6">{{ $loop->iteration }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6">{{ Controller::censorText($app->app_id) }}</span></td>
                                     <td><span class="align-middle badge text-{{ Controller::statusColor($app->status) }} fs-6">{{ $app->name }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ $app->ppd_basic }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ $app->ppd_premium }}</span></td>
+                                    <td><span class="align-middle badge text-dark fs-6">{{ number_format($app->ppd_basic) }}{{ $currency }}</span></td>
+                                    <td><span class="align-middle badge text-dark fs-6">{{ number_format($app->ppd_premium) }}{{ $currency }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6">{{ Controller::timeElapsed($app->created_at) }}</span></td>
+                                    <td><span class="align-middle badge text-dark fs-6">{{ number_format($keysCount) }}</span></td>
                                     <td>
                                         <a href={{ route('apps.edit', ['id' => $app->edit_id]) }} class="btn btn-outline-dark">
                                             <i class="bi bi-person"></i>
@@ -50,7 +59,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="7"><span class="align-middle badge text-danger fs-6">No Apps Where Found</span></td>
+                                <td colspan="8"><span class="align-middle badge text-danger fs-6">No Apps Where Found</span></td>
                             </tr>
                         @endif
                     </table>

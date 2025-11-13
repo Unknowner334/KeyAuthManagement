@@ -36,10 +36,14 @@ class App extends Model
                 $app->edit_id = (string) \Illuminate\Support\Str::uuid();
             }
         });
+
+        static::deleting(function ($app) {
+            $app->keys()->delete();
+        });
     }
 
     public function keys()
     {
-        return $this->hasMany(Key::class, 'edit_id', 'app_id');
+        return $this->hasMany(Key::class, 'app_id', 'app_id');
     }
 }

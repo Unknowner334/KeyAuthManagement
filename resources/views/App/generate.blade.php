@@ -32,8 +32,8 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option value="">-- Select Status --</option>
-                                    <option value="Active" selected>Active</option>
-                                    <option value="Inactive">Inactive</option>
+                                    <option value="Active" class="text-success" selected>Active</option>
+                                    <option value="Inactive" class="text-danger">Inactive</option>
                                 </select>
                             </div>
                         </div>
