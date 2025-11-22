@@ -38,10 +38,10 @@ return new class extends Migration
             $table->id();
             $table->string('key_id')->nullable();
             $table->string('key');
-            $table->string('serial_number');
+            $table->string('device')->default('unknown-device');
             $table->string('ip_address');
-            $table->string('app_id');
-            $table->enum('status', ['Success', 'Failed'])->default('Success');
+            $table->string('app_id')->default('unknown-app');
+            $table->enum('status', ['Success', 'Fail'])->default('Success');
             $table->enum('type', ['New Device', 'Old Device'])->default('New Device');
             $table->timestamps();
         });

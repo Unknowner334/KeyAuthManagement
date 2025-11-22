@@ -31,7 +31,7 @@
                             <th><span class="align-middle badge text-dark fs-6">#</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Key ID</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Key</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Serial Number</span></th>
+                            <th><span class="align-middle badge text-dark fs-6">Device</span></th>
                             <th><span class="align-middle badge text-dark fs-6">IP Address</span></th>
                             <th><span class="align-middle badge text-dark fs-6">App ID</span></th>
                             <th><span class="align-middle badge text-dark fs-6">App Name</span></th>
@@ -50,7 +50,7 @@
                                     <td><span class="align-middle badge text-dark fs-6">{{ ($keyHistory->currentPage() - 1) * $keyHistory->perPage() + $loop->iteration }}</span></td>
                                     <td><span class="align-middle badge text-{{ Controller::statusColor($key->status) }} fs-6 copy-trigger" data-copy="{{ $History->key_id }}">{{ Controller::censorText($History->key_id) }}</span></td>
                                     <td><span class="align-middle badge text-{{ Controller::statusColor($key->status) }} fs-6 copy-trigger" data-copy="{{ $History->key }}">{{ Controller::censorText($History->key) }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $History->serial_number }}">{{ $History->serial_number }}</span></td>
+                                    <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $History->device }}">{{ Controller::censorText($History->device) }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $History->ip_address }}">{{ $History->ip_address }}</span></td>
                                     <td><span class="align-middle badge text-{{ Controller::statusColor($app->status) }} fs-6 copy-trigger" data-copy="{{ $History->app_id }}">{{ Controller::censorText($History->app_id) }}</span></td>
                                     <td><span class="align-middle badge text-{{ Controller::statusColor($app->status) }} fs-6 copy-trigger" data-copy="{{ $app->name ?? "N/A" }}">{{ $app->name ?? "N/A" }}</span></td>

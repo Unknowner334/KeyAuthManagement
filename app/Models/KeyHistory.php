@@ -11,9 +11,9 @@ class KeyHistory extends Model
     protected $fillable = [
         'key_id',
         'key',
-        'serial_number',
+        'device',
         'ip_address',
-        'app',
+        'app_id',
         'status',
         'created_at',
         'updated_at',
