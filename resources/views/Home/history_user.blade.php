@@ -31,7 +31,6 @@
                             <th><span class="align-middle badge text-dark fs-6">Type</span></th>
                             <th><span class="align-middle badge text-dark fs-6">IP Address</span></th>
                             <th><span class="align-middle badge text-dark fs-6">User Agent</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Payload</span></th>
                             <th><span class="align-middle badge text-dark fs-6">Created At</span></th>
                         </tr>
                         @if ($histories->isNotEmpty())
@@ -51,7 +50,6 @@
                                     <td><span class="align-middle badge text-dark fs-6">{{ $history->type }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $history->ip_address }}">{{ $history->ip_address }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $history->user_agent }}">{{ Controller::censorText($history->user_agent, 10) }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6 copy-trigger" data-copy="{{ $history->payload }}">{{ Controller::censorText($history->payload, 10) }}</span></td>
                                     <td><span class="align-middle badge text-dark fs-6">{{ Controller::timeElapsed($history->created_at) }}</span></td>
                                 </tr>
                             @endforeach
