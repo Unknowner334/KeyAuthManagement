@@ -5,15 +5,12 @@
 @section('content')
     <div class="col-lg-6">
         @include('Layout.msgStatus')
-        <div class="card mb-5">
-            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-                <span class="h6 mb-0">Users Editing</span>
-                <div class="d-flex align-items-center gap-2">
-                    <a class="btn btn-outline-light btn-sm" href={{ route('admin.users') }}><i class="bi bi-person"></i> BACK</a>
-                </div>
+        <div class="card shadow-sm mb-5">
+            <div class="card-header text-center text-white bg-danger">
+                Users Editing · {{ $user->username }}
             </div>
             <div class="card-body">
-                <form action={{ route('admin.users.edit.post') }} method="post" id="updateForm">
+                <form action={{ route('admin.users.edit.post') }} method="post">
                     @csrf
                     <input type="hidden" name="user_id" id="user_id" required value="{{ $user->user_id }}">
                     <div class="row">
@@ -65,18 +62,19 @@
 
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
-                                <label for="perm" class="form-label">Permissions</label>
-                                <select name="perm" id="perm" class="form-control">
-                                    <option value="">-- Select Permissions --</option>
+                                <label for="role" class="form-label">Role</label>
+                                <select name="role" id="role" class="form-control">
+                                    <option value="">-- Select Role --</option>
                                     <option value="Owner" class="text-danger" @if ($user->permissions == "Owner") selected @endif>Owner</option>
-                                    <option value="Admin" class="text-warning" @if ($user->permissions == "Admin") selected @endif>Admin</option>
+                                    <option value="Manager" class="text-warning" @if ($user->permissions == "Manager") selected @endif>Manager</option>
+                                    <option value="Reseller" class="text-primary" @if ($user->permissions == "Reseller") selected @endif>Reseller</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal"><i class="bi bi-plus-square"></i> Update User</button>
+                        <button class="btn btn-outline-danger">Update User</button>
 
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="bi bi-trash3"></i> Delete User</button>
                     </div>
@@ -87,24 +85,9 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="confirmUpdateModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-bg-danger">
-                    <h5 class="modal-title">Confirm Update</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to update the user?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmUpdateBtn">Yes, Update</button>
-                </div>
-            </div>
-        </div>
+        <p class="text-muted text-center">
+            <a href="{{ route('admin.users') }}" class="py-1 px-2 bg-white text-muted"><small><i class="bi bi-arrow-left"></i> Back to Users</small></a>
+        </p>
     </div>
 
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
@@ -126,10 +109,6 @@
     </div>
 
     <script>
-        document.getElementById('confirmUpdateBtn').addEventListener('click', function() {
-            document.getElementById('updateForm').submit();
-        });
-
         document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             document.getElementById('deleteForm').submit();
         });

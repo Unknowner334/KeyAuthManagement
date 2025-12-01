@@ -24,12 +24,14 @@ Route::get('/dashboard', [DashController::class, 'dashboard'])->name('dashboard'
 // * Manage Users
 Route::get('/admin/users', [DashController::class, 'manageusers'])->name('admin.users')->middleware('auth', 'session.timeout');
 Route::get('/admin/users/{id}', [DashController::class, 'manageusersedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit')->middleware('auth', 'session.timeout');
+Route::get('/admin/users/wallet/{id}', [DashController::class, 'manageusersedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.wallet')->middleware('auth', 'session.timeout');
 Route::get('/admin/users/generate', [DashController::class, 'manageusersgenerate'])->name('admin.users.generate')->middleware('auth', 'session.timeout');
 Route::get('/admin/users/history', [DashController::class, 'manageusershistory'])->name('admin.users.history')->middleware('auth', 'session.timeout');
 Route::get('/admin/users/history/{id}', [DashController::class, 'manageusershistoryuser'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.history.user')->middleware('auth', 'session.timeout');
 Route::post('/admin/users', [DashController::class, 'manageusersedit_action'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit.post')->middleware('auth', 'session.timeout');
 Route::post('/admin/users/generate', [DashController::class, 'manageusersgenerate_action'])->name('admin.users.generate.post')->middleware('auth', 'session.timeout');
 Route::post('/admin/users/delete', [DashController::class, 'manageusersdelete'])->name('admin.users.delete')->middleware('auth', 'session.timeout');
+Route::post('/admin/users/wallet', [DashController::class, 'manageusersedit'])->name('admin.users.wallet.post')->middleware('auth', 'session.timeout');
 
 // * Manage Referrable Codes
 Route::get('/admin/referrables', [DashController::class, 'managereferrable'])->name('admin.referrable')->middleware('auth', 'session.timeout');

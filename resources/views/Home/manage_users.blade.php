@@ -48,7 +48,7 @@
                                     $saldo = Controller::saldoData($item->saldo, $item->permissions);
                                 @endphp
                                 <tr>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $loop->iteration }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->username }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ $saldo[1] }} fs-6">{{ $saldo[0] }}</span></td>
@@ -56,7 +56,15 @@
                                     <td><span class="align-middle badge fw-semibold text-{{ $reff_status }} fs-6">{{ $reff_code }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
                                     <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
-                                    <td>ACTION</td>
+                                    <td>
+                                        <a href={{ route('admin.users.wallet', ['id' => $item->user_id]) }} class="btn btn-outline-dark btn-sm">
+                                            <i class="bi bi-wallet"></i>
+                                        </a>
+
+                                        <a href={{ route('admin.users.edit', ['id' => $item->user_id]) }} class="btn btn-outline-dark btn-sm">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -82,6 +90,8 @@
                 ordering: true,
                 order: [[0,'desc']],
                 columnDefs: [
+                    { targets: [7, 8], searchable: false },
+                    { targets: [0, 1, 2, 4, 5, 6], searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

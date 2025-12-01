@@ -30,15 +30,33 @@
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
                                 </tr>
                             </thead>
-                            @foreach ($apps as $app)
+                            @foreach ($apps as $item)
+                                @php
+                                    $price = number_format($item->price);
+                                    $raw_price = $item->price;
+
+                                    if ($raw_price < 10000) {
+                                        $price = $price;
+                                    } else if ($raw_price >= 10000 && $raw_price < 1000000) {
+                                        $price = number_format($raw_price / 1000) . 'K';
+                                    } else if ($raw_price >= 1000000 && $raw_price < 1000000000) {
+                                        $price = number_format($raw_price / 1000000) . 'M';
+                                    } else if ($raw_price >= 1000000000 && $raw_price < 1000000000000) {
+                                        $price = number_format($raw_price / 1000000000) . 'B';
+                                    } else if ($raw_price >= 1000000000000) {
+                                        $price = number_format($raw_price / 1000000000000) . 'T';
+                                    } else {
+                                        $price = "N/A";
+                                    }
+                                @endphp
                                 <tr>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $loop->iteration }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $app->name }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ number_format($app->price) . $currency }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($app->created_at) }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($app->registrar) }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $price . $currency }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
                                     <td>
-                                        <a href={{ route('apps.edit', ['id' => $app->edit_id]) }} class="btn btn-outline-dark btn-sm">
+                                        <a href={{ route('apps.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                     </td>
@@ -67,6 +85,8 @@
                 ordering: true,
                 order: [[0,'desc']],
                 columnDefs: [
+                    { targets: -1, searchable: false },
+                    { targets: [0, 1, 2, 4], searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

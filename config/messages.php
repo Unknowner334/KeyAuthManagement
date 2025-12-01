@@ -7,9 +7,9 @@ return [
         'logged_out' => '<strong>Logged Out</strong> Successfully.',
         'register_success' => '<strong>Registered Successfully</strong>, You can now login.',
         // ? Setting
-        'created' => ':flag Successfully <strong>Created</strong>.',
-        'updated' => ':flag Successfully <strong>Updated</strong>.',
-        'deleted' => ':flag Successfully <strong>Deleted</strong>.',
+        'created' => ':flag <strong>Successfully Created</strong>.',
+        'updated' => ':flag <strong>Successfully Updated</strong>.',
+        'deleted' => ':flag <strong>Successfully Deleted</strong>.',
     ],
 
     'error' => [

@@ -21,8 +21,10 @@ abstract class Controller
     static function permissionColor($perm) {
         if ($perm == 'Owner') {
             return 'danger';
-        } elseif ($perm == 'Admin') {
+        } elseif ($perm == 'Manager') {
             return 'warning';
+        } elseif ($perm == 'Reseller') {
+            return 'primary';
         } else {
             return 'dark';
         }

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('username')->unique()->max(50);
             $table->string('password')->max(50)->min(8);
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
-            $table->enum('permissions', ['Owner', 'Admin'])->default('Admin');
+            $table->enum('permissions', ['Owner', 'Manager', 'Reseller'])->default('Reseller');
             $table->integer('saldo')->default(10000);
             $table->string('reff')->nullable();
             $table->string('registrar')->nullable();

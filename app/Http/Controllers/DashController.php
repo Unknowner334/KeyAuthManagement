@@ -32,11 +32,7 @@ class DashController extends Controller
 
     public function manageusers(Request $request) {
         $errorMessage = Config::get('messages.error.validation');
-        if ($request->get('search')) {
-            $users = User::where('username', $request->get('search'))->orderBy('created_at', 'desc')->paginate(10);
-        } else {
-            $users = User::orderBy('created_at', 'desc')->paginate(10);
-        }
+        $users = User::get();
 
         if (auth()->user()->permissions == "Owner") {
             return view('Home.manage_users', compact('users'));
@@ -68,10 +64,12 @@ class DashController extends Controller
             'username' => 'required|string|min:4|max:50|unique:users,username',
             'password' => 'required|string|confirmed|min:8|max:50',
             'status'   => 'required|in:Active,Inactive',
-            'perm'     => 'required|in:Owner,Admin',
+            'role'     => 'required|in:Owner,Manager,Reseller',
         ]);
 
         $username = $request->input('username');
+        $name = $request->input('name');
+        $role = $request->input('role');
 
         try {
             User::create([
@@ -79,11 +77,17 @@ class DashController extends Controller
                 'username'    => $request->input('username'),
                 'password'    => $request->input('password'),
                 'status'      => $request->input('status'),
-                'permissions' => $request->input('perm'),
-                'created_by'  => auth()->user()->user_id,
+                'permissions' => $request->input('role'),
+                'registrar'  => auth()->user()->user_id,
             ]);
 
-            return redirect()->route('admin.users.generate')->with('msgSuccess', str_replace(':flag', "User " . $username, $successMessage));
+            return redirect()->route('admin.users.generate')->with('msgSuccess', str_replace(':flag', "<strong>User</strong>", $successMessage))->with('msgSuccess2', 
+                "
+                <b>Name: $name</b> <br>
+                <b>User: $username</b> <br>
+                <b>Role: $role</b>
+                "
+            );
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
@@ -116,10 +120,13 @@ class DashController extends Controller
             'user_id'  => 'required|string|min:4|max:100|exists:users,user_id',
             'name'     => 'required|string|min:4|max:100',
             'status'   => 'required|in:Active,Inactive',
-            'perm'     => 'required|in:Owner,Admin',
+            'role'     => 'required|in:Owner,Manager,Reseller',
         ]);
 
         $username = $request->input('username');
+        $name = $request->input('name');
+        $role = $request->input('role');
+        $status = $request->input('status');
         $user = User::where('user_id', $request->input('user_id'))->first();
 
         $request->validate([
@@ -141,18 +148,25 @@ class DashController extends Controller
                     'username'    => $request->input('username'),
                     'password'    => $request->input('password'),
                     'status'      => $request->input('status'),
-                    'permissions' => $request->input('perm'),
+                    'permissions' => $request->input('role'),
                 ]);
             } else {
                 $user->update([
                     'name'        => $request->input('name'),
                     'username'    => $request->input('username'),
                     'status'      => $request->input('status'),
-                    'permissions' => $request->input('perm'),
+                    'permissions' => $request->input('role'),
                 ]);
             }
 
-            return redirect()->route('admin.users.edit', $request->input('user_id'))->with('msgSuccess', str_replace(':flag', "User " . $username, $successMessage));
+            return redirect()->route('admin.users.edit', $request->input('user_id'))->with('msgSuccess', str_replace(':flag', "<strong>User</strong>", $successMessage))->with('msgSuccess2', 
+                "
+                <b>Name: $name</b> <br>
+                <b>User: $username</b> <br>
+                <b>Role: $role</b> <br>
+                <b>Status: $status</b>
+                "
+            );
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
@@ -181,7 +195,9 @@ class DashController extends Controller
         try {
             $user->delete();
 
-            return redirect()->route('admin.users')->with('msgSuccess', str_replace(':flag', "User " . $username, $successMessage));
+            return redirect()->route('admin.users')->with('msgSuccess', str_replace(':flag', "<strong>User</strong>", $successMessage))->with('msgSuccess2',
+                "<b>User: $username</b>"
+            );
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
