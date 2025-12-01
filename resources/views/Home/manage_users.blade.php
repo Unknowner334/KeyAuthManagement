@@ -9,7 +9,7 @@
 @section('content')
     <div class="col-lg-10">
         @include('Layout.msgStatus')
-        <div class="card mb-5">
+        <div class="card shadow-sm mb-5">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 Users Registration
                 <div class="d-flex align-items-center gap-2">
@@ -61,6 +61,10 @@
                                             <i class="bi bi-wallet"></i>
                                         </a>
 
+                                        <a href={{ route('admin.users.history', ['id' => $item->user_id]) }} class="btn btn-outline-dark btn-sm">
+                                            <i class="bi bi-person"></i>
+                                        </a>
+
                                         <a href={{ route('admin.users.edit', ['id' => $item->user_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
@@ -72,7 +76,7 @@
                         <table class="table table-sm table-bordered table-hover text-center">
                             <thead>
                                 <tr>
-                                    <th colspan="9"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>keys</strong> to show</span></th>
+                                    <th colspan="9"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>users</strong> to show</span></th>
                                 </tr>
                             </thead>
                         </table>

@@ -203,9 +203,9 @@ class DashController extends Controller
         }
     }
     
-    public function manageusershistroy() {
+    public function manageusershistory() {
         $errorMessage = Config::get('messages.error.validation');
-        $histories = UserHistory::orderBy('created_at', 'desc')->paginate(10);
+        $histories = UserHistory::get();
 
         if (!auth()->user()->permissions == "Owner") {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 201, Access Forbidden', $errorMessage),])->onlyInput('name');
@@ -220,7 +220,7 @@ class DashController extends Controller
 
     public function manageusershistoryuser($id) {
         $errorMessage = Config::get('messages.error.validation');
-        $histories = UserHistory::where('user_id', $id)->orderBy('created_at', 'desc')->paginate(10);
+        $histories = UserHistory::where('user_id', $id)->get();
 
         if (!auth()->user()->permissions == "Owner") {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 201, Access Forbidden', $errorMessage),])->onlyInput('name');
@@ -235,7 +235,7 @@ class DashController extends Controller
 
     public function managereferrable() {
         $errorMessage = Config::get('messages.error.validation');
-        $reffs = Reff::orderBy('created_at', 'desc')->paginate(10);
+        $reffs = Reff::get();
 
         if (auth()->user()->permissions == "Owner") {
             return view('Home.manage_reff', compact('reffs'));

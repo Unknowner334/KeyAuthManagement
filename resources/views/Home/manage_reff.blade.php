@@ -12,51 +12,53 @@
         @include('Layout.msgStatus')
         <div class="card mb-5">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <span class="h6 mb-0">Referrables Registration</span>
+                Referrables Registered
                 <div class="d-flex align-items-center gap-2">
                     <a class="btn btn-outline-light btn-sm" href={{ route('admin.referrable.generate') }}><i class="bi bi-person-add"></i> REFF</a>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered table-hover text-center">
-                        <tr>
-                            <th><span class="align-middle badge text-dark fs-6">#</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">ID</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Code</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Status</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Users Count</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Created By</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Created At</span></th>
-                            <th><span class="align-middle badge text-dark fs-6">Action</span></th>
-                        </tr>
-                        @if ($reffs->isNotEmpty())
-                            @foreach ($reffs as $reff)
+                    @if ($reffs->isNotEmpty())
+                        <table id="datatable" class="table table-sm table-bordered table-hover text-center" style="width:100%">
+                            <thead>
                                 <tr>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ ($reffs->currentPage() - 1) * $reffs->perPage() + $loop->iteration }}</span></td>
-                                    <td><span class="align-middle badge text-{{ Controller::statusColor($reff->status) }} fs-6 copy-trigger" data-copy="{{ $reff->edit_id }}">{{ Controller::censorText($reff->edit_id) }}</span></td>
-                                    <td><span class="align-middle badge text-{{ Controller::statusColor($reff->status) }} fs-6 copy-trigger" data-copy="{{ $reff->code }}">{{ Controller::censorText($reff->code) }}</span></td>
-                                    <td><span class="align-middle badge text-{{ Controller::statusColor($reff->status) }} fs-6">{{ $reff->status ?? "N/A" }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ DashController::UsersCreated($reff->edit_id) }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ Controller::userUsername($reff->created_by) }}</span></td>
-                                    <td><span class="align-middle badge text-dark fs-6">{{ Controller::timeElapsed($reff->created_at) ?? "N/A" }}</span></td>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">#</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Name</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Username</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Saldo</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Role</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Reff</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Registrar</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Created</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
+                                </tr>
+                            </thead>
+                            @foreach ($reffs as $item)
+                                <tr>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->username }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ $saldo[1] }} fs-6">{{ $saldo[0] }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::permissionColor($item->permissions) }} fs-6">{{ $item->permissions }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ $reff_status }} fs-6">{{ $reff_code }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
+                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
                                     <td>
-                                        <a href={{ route('admin.referrable.edit', ['id' => $reff->edit_id]) }} class="btn btn-outline-dark">
-                                            <i class="bi bi-person-add"></i>
-                                        </a>
+                                        Action
                                     </td>
                                 </tr>
                             @endforeach
-                        @else
-                            <tr>
-                                <td colspan="10"><span class="align-middle badge text-danger fs-6">No Reff Where Found</span></td>
-                            </tr>
-                        @endif
-                    </table>
-                </div>
-
-                <div class="d-flex justify-content-end">
-                    {{ $reffs->onEachSide(1)->links('pagination::bootstrap-5') }}
+                        </table>
+                    @else
+                        <table class="table table-sm table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="9"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>referrables</strong> to show</span></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>

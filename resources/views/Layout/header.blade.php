@@ -43,10 +43,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li>
-                                        <form action="{{ route('logout') }}" method="POST" id="logoutForm">
-                                            @csrf
-                                            <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal"><i class="bi bi-box-arrow-in-left"></i> Logout</button>
-                                        </form>
+                                        <button type="button" class="dropdown-item text-danger" id="logoutBtn"><i class="bi bi-box-arrow-in-left"></i> Logout</button>
                                     </li>
                                 </li>
                             </ul>
