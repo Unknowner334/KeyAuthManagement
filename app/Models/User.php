@@ -21,7 +21,7 @@ class User extends Authenticatable
         'permissions',
         'status',
         'reff',
-        'created_by',
+        'registrar',
         'created_at',
         'updated_at',
     ];

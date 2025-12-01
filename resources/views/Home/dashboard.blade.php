@@ -7,34 +7,45 @@
 @endphp
 
 @section('content')
-    <div class="col-lg-12">
+    <div class="col-lg-10">
         @include('Layout.msgStatus')
         <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header text-white bg-dark">
+                        Keys Registration History
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover text-center">
+                                @if ($keys->isNotEmpty())
+                                    @foreach ($keys as $key)
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="align-middle badge text-dark fw-semibold">#{{ $loop->iteration }}</span></td>
+                                                <td>{{ $key->app->name }}</td>
+                                                <td><span class="align-middle badge text-dark fw-semibold">{{ Controller::censorText($key->key) }}</span></td>
+                                                <td><span class="align-middle badge text-dark fw-semibold">{{ $key->duration }} Days</span></td>
+                                                <td><span class="align-middle badge text-primary fw-semibold">{{ $key->max_devices }} Devices</span></td>
+                                                <td><i class="align-middle badge text-muted fw-semibold">{{ Controller::timeElapsed($key->created_at) }}</i></td>
+                                            </tr>
+                                        </tbody>
+                                    @endforeach
+                                @else
+                                    <thead>
+                                        <tr>
+                                            <th><span class="align-middle badge text-dark fw-normal">There are no <strong>keys</strong> to show</span></th>
+                                        </tr>
+                                    </thead>
+                                @endif
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-4">
-                <div class="card mb-5">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        Keys Registration
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="card mb-5">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        Apps Registration
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card mb-5">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center text-white bg-dark">
                         Information
                     </div>
                     <div class="card-body">
@@ -44,20 +55,24 @@
                                 <span class="badge text-dark fw-bold">{{ auth()->user()->name }}</span>
                             </li>
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                Permissions
+                                Roles
                                 <span class="badge text-dark fw-bold">{{ auth()->user()->permissions }}</span>
+                            </li>
+                            <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                Saldo
+                                <span class="badge text-dark fw-bold">128453821436 {{ $currency }}</span>
                             </li>
                         </ul>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Login Time
-                                <span id="login-timer" class="badge text-dark fw-semibold" data-logintime="{{ $loginTime ? $loginTime->toIso8601String() : null }}"></span>
+                                <span id="login-timer" class="badge text-dark fw-bold" data-logintime="{{ $loginTime ? $loginTime->toIso8601String() : null }}"></span>
                             </li>
                         </ul>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Auto Logout
-                                <span id="expiry-timer" class="badge text-dark fw-semibold" data-expiry="{{ $expiryTime }}"></span>
+                                <span id="expiry-timer" class="badge text-dark fw-bold" data-expiry="{{ $expiryTime }}"></span>
                             </li>
                         </ul>
                     </div>

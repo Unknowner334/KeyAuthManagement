@@ -36,30 +36,30 @@
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
                                 </tr>
                             </thead>
-                            @foreach ($keys as $key)
+                            @foreach ($keys as $item)
                                 @php
-                                    if ($key->owner == "") {
+                                    if ($item->owner == "") {
                                         $owner = "N/A";
                                     } else {
-                                        $owner = $key->owner;
+                                        $owner = $item->owner;
                                     }
                                 @endphp
                                 <tr>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $loop->iteration }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $owner }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($key->app->status) }} fs-6">{{ $key->app->name ?? 'N/A' }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($key->status) }} fs-6 key-sensi keyBlur">{{ $key->key }}</span></td>
-                                    <td><i class="align-middle badge fw-semibold text-{{ KeyController::RemainingDaysColor(KeyController::RemainingDays($key->expire_date)) }} fs-6">{{ KeyController::RemainingDays($key->expire_date) }}/{{ $key->duration ?? 'N/A' }} Days</i></td>
-                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ KeyController::DevicesHooked($key->edit_id) }}/{{ $key->max_devices ?? 'N/A' }}</i></td>
-                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($key->created_at) ?? 'N/A' }}</i></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($key->registrar) }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ number_format(KeyController::keyPriceCalculator($key->app->price, $key->max_devices, $key->duration)) . $currency }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->app->status) }} fs-6">{{ $item->app->name ?? 'N/A' }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 key-sensi keyBlur">{{ $item->key }}</span></td>
+                                    <td><i class="align-middle badge fw-semibold text-{{ KeyController::RemainingDaysColor(KeyController::RemainingDays($item->expire_date)) }} fs-6">{{ KeyController::RemainingDays($item->expire_date) }}/{{ $item->duration ?? 'N/A' }} Days</i></td>
+                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ KeyController::DevicesHooked($item->edit_id) }}/{{ $item->max_devices ?? 'N/A' }}</i></td>
+                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) ?? 'N/A' }}</i></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ number_format(KeyController::keyPriceCalculator($item->app->price, $item->max_devices, $item->duration)) . $currency }}</span></td>
                                     <td>
-                                        <a href={{ route('keys.resetApiKey', ['id' => $key->edit_id]) }} class="btn btn-outline-danger btn-sm">
+                                        <a href={{ route('keys.resetApiKey', ['id' => $item->edit_id]) }} class="btn btn-outline-danger btn-sm">
                                             <i class="bi bi-bootstrap-reboot"></i>
                                         </a>
 
-                                        <a href={{ route('keys.edit', ['id' => $key->edit_id]) }} class="btn btn-outline-dark btn-sm">
+                                        <a href={{ route('keys.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                     </td>
