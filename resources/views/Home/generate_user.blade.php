@@ -92,6 +92,11 @@
                 confirmButtonText: 'Yes, register'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Please wait...'
+                    })
+
                     document.getElementById('generateForm').submit();
                 }
             });

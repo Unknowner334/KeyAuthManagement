@@ -127,6 +127,11 @@
                 confirmButtonText: 'Yes, edit'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Please wait...'
+                    })
+
                     document.getElementById('updateForm').submit();
                 }
             });

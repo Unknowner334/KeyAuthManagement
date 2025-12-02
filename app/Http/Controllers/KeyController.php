@@ -132,17 +132,11 @@ class KeyController extends Controller
                 'registrar'   => auth()->user()->user_id,
             ]);
 
-            $msg = str_replace(':flag', "<b>Key</b>", $successMessage);
+            $msg = str_replace(':flag', "<b>Key</b> " . $key, $successMessage);
             return redirect()->route('keys.generate')->with('msgSuccess',
                 "
                 $msg <br>
-                <i class='bi bi-terminal'></i> <b>App: $appName</b> <br>
-                <i class='bi bi-key'></i> <b>Key: $key</b> <br>
-                <i class='bi bi-award'></i> <b>Owner: $owner</b> <br>
-                <i class='bi bi-clock'></i> <b>Duration: $duration Days</b> <br>
-                <i class='bi bi-clipboard-check'></i> <b>Status: $status</b> <br>
-                <i class='bi bi-phone'></i> <b>Max Devices: $devices</b> <br>
-                <i class='bi bi-wallet'></i> <b>Saldo: $saldo_ext</b>
+                <b>Saldo: $saldo_ext</b>
                 "
             );
         } catch (\Exception $e) {
@@ -244,7 +238,7 @@ class KeyController extends Controller
                 ]);
             }
 
-            return redirect()->route('keys.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "Key " . $keyName, $successMessage));
+            return redirect()->route('keys.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "<b>Key</b> " . $keyName, $successMessage));
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 203', $errorMessage),])->onlyInput('name');
         }

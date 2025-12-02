@@ -64,6 +64,42 @@
                 e.preventDefault();
                 $(".form-text, .alert-danger, .form-group .text-danger").hide();
             });
+
+            @if($errors->any())
+                Swal.fire({
+                    title: 'Error',
+                    html: '{!! $errors->first() !!}',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if(session()->has('msgSuccess'))
+                Swal.fire({
+                    title: 'Success',
+                    html: @json(session('msgSuccess')),
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if(session()->has('msgWarning'))
+                Swal.fire({
+                    title: 'Warning',
+                    html: @json(session('msgWarning')),
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if(session()->has('msgInfo'))
+                Swal.fire({
+                    title: 'Info',
+                    html: @json(session('msgInfo')),
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            @endif
         });
 
         const Toast = Swal.mixin({

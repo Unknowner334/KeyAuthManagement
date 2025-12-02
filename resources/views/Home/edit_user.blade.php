@@ -102,6 +102,11 @@
                 confirmButtonText: 'Yes, edit'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Please wait...'
+                    })
+
                     document.getElementById('editForm').submit();
                 }
             });
@@ -118,6 +123,11 @@
                 confirmButtonText: 'Yes, delete'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Please wait...'
+                    })
+
                     document.getElementById('deleteForm').submit();
                 }
             });
