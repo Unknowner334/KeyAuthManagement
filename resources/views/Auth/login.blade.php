@@ -3,7 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="col-lg-3 col-md-4 col-sm-5">
+    <div class="col-lg-3 col-md-5 col-sm-7">
         @include('Layout.msgStatus')
         <div class="card shadow-sm mb-5">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">

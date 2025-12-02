@@ -22,13 +22,13 @@
                                     @foreach ($keys as $item)
                                         <tbody>
                                             <tr>
-                                                <td><span class="align-middle badge text-dark fw-semibold">#{{ $item->id }}</span></td>
+                                                <td><span class="align-middle badge text-dark">#{{ $item->id }}</span></td>
                                                 <td>{{ $item->app->name }}</td>
-                                                <td><span class="align-middle badge text-dark fw-semibold">{{ Controller::censorText($item->key) }}</span></td>
-                                                <td><span class="align-middle badge text-dark fw-semibold">{{ $item->duration }} Days</span></td>
-                                                <td><span class="align-middle badge text-primary fw-semibold">{{ Controller::userUsername($item->registrar) }}</span></td>
-                                                <td><span class="align-middle badge text-primary fw-semibold">{{ $item->max_devices }} Devices</span></td>
-                                                <td><i class="align-middle badge text-muted fw-semibold">{{ Controller::timeElapsed($item->created_at) }}</i></td>
+                                                <td><span class="align-middle badge text-dark">{{ Controller::censorText($item->key) }}</span></td>
+                                                <td><span class="align-middle badge text-dark">{{ $item->duration }} Days</span></td>
+                                                <td><span class="align-middle badge text-primary">{{ Controller::userUsername($item->registrar) }}</span></td>
+                                                <td><span class="align-middle badge text-primary">{{ $item->max_devices }} Devices</span></td>
+                                                <td><i class="align-middle badge fw-normal text-muted">{{ Controller::timeElapsed($item->created_at) }}</i></td>
                                             </tr>
                                         </tbody>
                                     @endforeach
@@ -53,22 +53,22 @@
                         <ul class="list-group list-hover mb-3">
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Name
-                                <span class="badge text-dark fw-bold">{{ auth()->user()->name }}</span>
+                                <span class="badge text-dark">{{ auth()->user()->name }}</span>
                             </li>
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Roles
-                                <span class="badge text-{{ Controller::permissionColor(auth()->user()->role) }} fw-bold">{{ auth()->user()->role }}</span>
+                                <span class="badge text-{{ Controller::permissionColor(auth()->user()->role) }}">{{ auth()->user()->role }}</span>
                             </li>
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Saldo
                                 @php $saldo = Controller::saldoData(auth()->user()->saldo, auth()->user()->role); @endphp
-                                <span class="badge text-{{ $saldo[1] }} fw-bold">{{ $saldo[0] }}</span>
+                                <span class="badge text-{{ $saldo[1] }}">{{ $saldo[0] }}</span>
                             </li>
                         </ul>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Login Time
-                                <span id="login-timer" class="badge text-dark fw-bold" data-logintime="{{ $loginTime ? $loginTime->toIso8601String() : null }}"></span>
+                                <span id="login-timer" class="badge text-dark" data-logintime="{{ $loginTime ? $loginTime->toIso8601String() : null }}"></span>
                             </li>
                         </ul>
                         <ul class="list-group">

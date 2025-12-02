@@ -10,6 +10,7 @@ return [
         'created' => ':flag <b>Successfully Created</b>.',
         'updated' => ':flag <b>Successfully Updated</b>.',
         'deleted' => ':flag <b>Successfully Deleted</b>.',
+        'reseted' => ':flag <b>Successfully Reseted</b>.',
     ],
 
     'error' => [

@@ -21,18 +21,18 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($users->isNotEmpty())
-                        <table id="datatable" class="table table-sm table-bordered table-hover text-center" style="width:100%">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
                             <thead>
                                 <tr>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">#</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Name</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Username</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Saldo</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Role</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Reff</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Registrar</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Created</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Saldo</th>
+                                    <th>Role</th>
+                                    <th>Reff</th>
+                                    <th>Registrar</th>
+                                    <th>Created</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             @foreach ($users as $item)
@@ -48,14 +48,14 @@
                                     $saldo = Controller::saldoData($item->saldo, $item->role);
                                 @endphp
                                 <tr>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->username }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ $saldo[1] }} fs-6">{{ $saldo[0] }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::permissionColor($item->role) }} fs-6">{{ $item->role }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ $reff_status }} fs-6">{{ $reff_code }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
-                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
+                                    <td>{{ $item->id }}</td>
+                                    <td class="text-{{ Controller::statusColor($item->status) }}">{{ $item->name }}</td>
+                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->username }}</span></td>
+                                    <td class="text-{{ $saldo[1] }}">{{ $saldo[0] }}</td>
+                                    <td class="text-{{ Controller::permissionColor($item->role) }}">{{ $item->role }}</td>
+                                    <td class="text-{{ $reff_status }}">{{ $reff_code }}</td>
+                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
+                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
                                     <td>
                                         <a href={{ route('admin.users.wallet', ['id' => $item->user_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-wallet"></i>

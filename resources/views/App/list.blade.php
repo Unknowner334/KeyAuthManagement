@@ -19,16 +19,16 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($apps->isNotEmpty())
-                        <table id="datatable" class="table table-sm table-bordered table-hover text-center" style="width:100%">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
                             <thead>
                                 <tr>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">#</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Name</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Price</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Key Count</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Created</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Registrar</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Key Count</th>
+                                    <th>Created</th>
+                                    <th>Registrar</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             @foreach ($apps as $item)
@@ -39,13 +39,13 @@
                                     if ($raw_price < 10000) {
                                         $price = $price;
                                     } else if ($raw_price >= 10000 && $raw_price < 1000000) {
-                                        $price = number_format($raw_price / 1000) . 'K';
+                                        $price = number_format($raw_price / 1000) . 'k';
                                     } else if ($raw_price >= 1000000 && $raw_price < 1000000000) {
-                                        $price = number_format($raw_price / 1000000) . 'M';
+                                        $price = number_format($raw_price / 1000000) . 'm';
                                     } else if ($raw_price >= 1000000000 && $raw_price < 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000) . 'B';
+                                        $price = number_format($raw_price / 1000000000) . 'b';
                                     } else if ($raw_price >= 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000000) . 'T';
+                                        $price = number_format($raw_price / 1000000000000) . 't';
                                     } else {
                                         $price = "N/A";
                                     }
@@ -57,12 +57,12 @@
                                     }
                                 @endphp
                                 <tr>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $price . $currency }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ number_format($keysCount) }} Key</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
+                                    <td>{{ $item->id }}</td>
+                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 px-3">{{ $item->name }}</span></td>
+                                    <td>{{ $price . $currency }}</td>
+                                    <td>{{ number_format($keysCount) }} Key</td>
+                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
+                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
                                     <td>
                                         <a href={{ route('apps.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-pencil-square"></i>

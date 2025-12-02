@@ -17,6 +17,7 @@ class Key extends Model
         'key',
         'status',
         'max_devices',
+        'devices',
         'duration',
         'expire_date',
         'registrar',

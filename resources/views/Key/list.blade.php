@@ -21,19 +21,18 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($keys->isNotEmpty())
-                        <table id="datatable" class="table table-sm table-bordered table-hover text-center" style="width:100%">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
                             <thead>
                                 <tr>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">#</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Owner</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">App</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Key</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Duration</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Devices</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Created</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Registrar</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Price</span></th>
-                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
+                                    <th>#</th>
+                                    <th>Owner</th>
+                                    <th>App</th>
+                                    <th>User Keys</th>
+                                    <th>Devices</th>
+                                    <th>Duration</th>
+                                    <th>Created</th>
+                                    <th>Registrar</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             @foreach ($keys as $item)
@@ -62,19 +61,18 @@
                                     }
                                 @endphp
                                 <tr>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $owner }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->app->status) }} fs-6">{{ $item->app->name ?? 'N/A' }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->key }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ KeyController::RemainingDaysColor(KeyController::RemainingDays($item->expire_date)) }} fs-6">{{ KeyController::RemainingDays($item->expire_date) }}/{{ $item->duration ?? 'N/A' }} Days</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ KeyController::DevicesHooked($item->devices) }}/{{ $item->max_devices ?? 'N/A' }}</span></td>
-                                    <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) ?? 'N/A' }}</i></td>
-                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
-                                    <td title="{{ number_format($raw_price) . $currency }}"><span class="align-middle badge fw-semibold text-dark fs-6">{{ $price . $currency }}</span></td>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $owner }}</td>
+                                    <td class="text-{{ Controller::statusColor($item->app->status) }}">{{ $item->app->name ?? 'N/A' }}</td>
+                                    <td title="{{ number_format($raw_price) . $currency }}"><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur px-3">{{ $item->key }}</span></td>
+                                    <td><span class="align-middle badge fw-normal text-white bg-dark fs-6">{{ KeyController::DevicesHooked($item->devices) }}/{{ $item->max_devices ?? 'N/A' }}</span></td>
+                                    <td class="text-{{ KeyController::RemainingDaysColor(KeyController::RemainingDays($item->expire_date)) }}">{{ KeyController::RemainingDays($item->expire_date) }}/{{ $item->duration ?? 'N/A' }} Days</td>
+                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) ?? 'N/A' }}</i></td>
+                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
                                     <td>
-                                        <a href={{ route('keys.resetApiKey', ['id' => $item->edit_id]) }} class="btn btn-outline-danger btn-sm">
+                                        <button type="button" class="btn btn-outline-danger btn-sm resetApiKey" data-id="{{ $item->edit_id }}">
                                             <i class="bi bi-bootstrap-reboot"></i>
-                                        </a>
+                                        </button>
 
                                         <a href={{ route('keys.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
                                             <i class="bi bi-pencil-square"></i>
@@ -87,7 +85,7 @@
                         <table class="table table-sm table-bordered table-hover text-center">
                             <thead>
                                 <tr>
-                                    <th colspan="11"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>keys</strong> to show</span></th>
+                                    <th colspan="9"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>keys</strong> to show</span></th>
                                 </tr>
                             </thead>
                         </table>
@@ -105,12 +103,11 @@
                 ordering: true,
                 order: [[0,'desc']],
                 columnDefs: [
-                    { targets: [6, 9], searchable: false },
-                    { targets: [0, 1, 2, 3, 4, 5, 7, 8], searchable: true },
+                    { targets: [4, 7], searchable: false },
+                    { targets: [0, 1, 2, 3, 5, 6], searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });
-
 
             $("#blur-out").click(function() {
                 if ($(".Blur").hasClass("blur")) {
@@ -120,6 +117,29 @@
                     $(".Blur").addClass("blur");
                     $("#blur-out").html(`<i class="bi bi-eye-slash"></i>`);
                 }
+            });
+
+            $('.resetApiKey').click(function() {
+                const id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Are you sure you want to reset the key?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, reset'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Toast.fire({
+                            icon: 'info',
+                            title: 'Please wait...'
+                        })
+
+                        window.location.href = `/keys/resetApiKey/${id}`;
+                    }
+                });
             });
         });
     </script>

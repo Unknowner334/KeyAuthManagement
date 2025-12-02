@@ -276,4 +276,35 @@ class KeyController extends Controller
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
     }
+
+    public function keyresetapi($id) {
+        $successMessage = Config::get('messages.success.reseted');
+        $errorMessage = Config::get('messages.error.validation');
+
+        if (parent::require_ownership(1, 0)) {
+            $key = Key::where('edit_id', $id)->first();
+
+            if (empty($key)) {
+                return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+            }
+        } else {
+            $key = Key::where('registrar', auth()->user()->user_id)->where('edit_id', $id)->first();
+
+            if (empty($key)) {
+                return back()->withErrors(['name' => str_replace(':info', 'Error Code 403, <b>Access Forbidden</b>', $errorMessage),])->onlyInput('name');
+            }
+        }
+
+        $keyName = $key->key;
+
+        try {
+            $key->update([
+                'devices' => "",
+            ]);
+
+            return redirect()->route('keys')->with('msgSuccess', str_replace(':flag', "<b>Key</b> " . $keyName, $successMessage));
+        } catch (\Exception $e) {
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
+        }
+    }
 }
