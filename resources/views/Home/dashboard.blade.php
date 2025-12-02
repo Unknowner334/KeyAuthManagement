@@ -56,11 +56,11 @@
                             </li>
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Roles
-                                <span class="badge text-{{ Controller::permissionColor(auth()->user()->permissions) }} fw-bold">{{ auth()->user()->permissions }}</span>
+                                <span class="badge text-{{ Controller::permissionColor(auth()->user()->role) }} fw-bold">{{ auth()->user()->role }}</span>
                             </li>
                             <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 Saldo
-                                @php $saldo = Controller::saldoData(auth()->user()->saldo, auth()->user()->permissions); @endphp
+                                @php $saldo = Controller::saldoData(auth()->user()->saldo, auth()->user()->role); @endphp
                                 <span class="badge text-{{ $saldo[1] }} fw-bold">{{ $saldo[0] }}</span>
                             </li>
                         </ul>

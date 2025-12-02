@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use app\Models\User;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 abstract class Controller
 {
@@ -110,5 +111,51 @@ abstract class Controller
         $data = [$saldo, $saldo_color];
 
         return $data;
+    }
+
+    static function require_ownership($allow_manager = 0) {
+        $user = auth()->user();
+        $errorMessage = Config::get('messages.error.validation');
+
+        if (!$user) return false;
+
+        if ($allow_manager == 1 && $user->role === "Manager") return true;
+        if ($user->role === "Owner") return true;
+
+        throw new HttpResponseException(
+            back()->withErrors([
+                'name' => str_replace(':info', 'Error Code 201, <strong>Access Forbidden</strong>', $errorMessage)
+            ])->onlyInput('name')
+        );
+
+        return false;
+    }
+
+    static function manager_limit($role) {
+        if (auth()->user()->role === "Manager") {
+            if ($role === "Owner") {
+                throw new HttpResponseException(
+                    back()->withErrors([
+                        'name' => 'You cannot register, edit, or delete a user with a higher role than yours.'
+                    ])->onlyInput('name')
+                );
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static function psueAction($user) {
+        if ($user->user_id == auth()->user()->user_id && $user->id == auth()->user()->id) {
+            throw new HttpResponseException(
+                back()->withErrors([
+                    'name' => 'The selected user is the same as the currently logged-in user.'
+                ])->onlyInput('name')
+            );
+            return false;
+        }
+
+        return true;
     }
 }

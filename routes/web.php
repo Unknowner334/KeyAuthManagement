@@ -7,6 +7,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\KeyController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\UserController;
 
 // * Login
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -25,16 +26,16 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
     Route::get('/dashboard', [DashController::class, 'dashboard'])->name('dashboard');
 
     // * Manage Users
-    Route::get('/admin/users', [DashController::class, 'manageusers'])->name('admin.users');
-    Route::get('/admin/users/{id}', [DashController::class, 'manageusersedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit');
-    Route::get('/admin/users/wallet/{id}', [DashController::class, 'manageuserssaldoedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.wallet');
-    Route::get('/admin/users/generate', [DashController::class, 'manageusersgenerate'])->name('admin.users.generate');
-    Route::get('/admin/users/history', [DashController::class, 'manageusershistory'])->name('admin.users.history');
-    Route::get('/admin/users/history/{id}', [DashController::class, 'manageusershistoryuser'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.history.user');
-    Route::post('/admin/users', [DashController::class, 'manageusersedit_action'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit.post');
-    Route::post('/admin/users/generate', [DashController::class, 'manageusersgenerate_action'])->name('admin.users.generate.post');
-    Route::post('/admin/users/delete', [DashController::class, 'manageusersdelete'])->name('admin.users.delete');
-    Route::post('/admin/users/wallet', [DashController::class, 'manageuserssaldoedit_action'])->name('admin.users.wallet.post');
+    Route::get('/admin/users', [UserController::class, 'manageusers'])->name('admin.users');
+    Route::get('/admin/users/{id}', [UserController::class, 'manageusersedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit');
+    Route::get('/admin/users/wallet/{id}', [UserController::class, 'manageuserssaldoedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.wallet');
+    Route::get('/admin/users/generate', [UserController::class, 'manageusersgenerate'])->name('admin.users.generate');
+    Route::get('/admin/users/history', [UserController::class, 'manageusershistory'])->name('admin.users.history');
+    Route::get('/admin/users/history/{id}', [UserController::class, 'manageusershistoryuser'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.history.user');
+    Route::post('/admin/users', [UserController::class, 'manageusersedit_action'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit.post');
+    Route::post('/admin/users/generate', [UserController::class, 'manageusersgenerate_action'])->name('admin.users.generate.post');
+    Route::post('/admin/users/delete', [UserController::class, 'manageusersdelete'])->name('admin.users.delete');
+    Route::post('/admin/users/wallet', [UserController::class, 'manageuserssaldoedit_action'])->name('admin.users.wallet.post');
 
     // * Manage Referrables
     Route::get('/admin/referrables', [DashController::class, 'managereferrable'])->name('admin.referrable');

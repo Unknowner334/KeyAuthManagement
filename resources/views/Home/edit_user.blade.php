@@ -65,9 +65,9 @@
                                 <label for="role" class="form-label">Role</label>
                                 <select name="role" id="role" class="form-control">
                                     <option value="">-- Select Role --</option>
-                                    <option value="Owner" class="text-danger" @if ($user->permissions == "Owner") selected @endif>Owner</option>
-                                    <option value="Manager" class="text-warning" @if ($user->permissions == "Manager") selected @endif>Manager</option>
-                                    <option value="Reseller" class="text-primary" @if ($user->permissions == "Reseller") selected @endif>Reseller</option>
+                                    <option value="Owner" class="text-danger" @if ($user->role == "Owner") selected @endif>Owner</option>
+                                    <option value="Manager" class="text-warning" @if ($user->role == "Manager") selected @endif>Manager</option>
+                                    <option value="Reseller" class="text-primary" @if ($user->role == "Reseller") selected @endif>Reseller</option>
                                 </select>
                             </div>
                         </div>

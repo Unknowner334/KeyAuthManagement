@@ -45,14 +45,14 @@
                                         $reff_code = "N/A";
                                     }
 
-                                    $saldo = Controller::saldoData($item->saldo, $item->permissions);
+                                    $saldo = Controller::saldoData($item->saldo, $item->role);
                                 @endphp
                                 <tr>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur">{{ $item->username }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ $saldo[1] }} fs-6">{{ $saldo[0] }}</span></td>
-                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::permissionColor($item->permissions) }} fs-6">{{ $item->permissions }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-{{ Controller::permissionColor($item->role) }} fs-6">{{ $item->role }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ $reff_status }} fs-6">{{ $reff_code }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
                                     <td><i class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>

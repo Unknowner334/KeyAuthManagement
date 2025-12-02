@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admin',
             'password' => 'admin111',
-            'permissions' => 'Owner',
+            'role' => 'Owner',
         ]);
     }
 }
