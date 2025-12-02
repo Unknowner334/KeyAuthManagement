@@ -96,9 +96,9 @@ abstract class Controller
         $currency = Config::get('messages.settings.currency');
         if ($userSaldo >= 2000000000 || $userRole == "Owner") {
             if ($raw === 1) {
-                $saldo = "∾";
-            } else {
                 $saldo = "Unlimited";
+            } else {
+                $saldo = "∾";
             }
             $saldo_color = "primary";
         } else {

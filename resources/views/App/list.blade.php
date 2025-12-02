@@ -25,6 +25,7 @@
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">#</span></th>
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Name</span></th>
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Price</span></th>
+                                    <th><span class="align-middle badge fw-semibold text-dark fs-6">Key Count</span></th>
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Created</span></th>
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Registrar</span></th>
                                     <th><span class="align-middle badge fw-semibold text-dark fs-6">Action</span></th>
@@ -48,11 +49,18 @@
                                     } else {
                                         $price = "N/A";
                                     }
+
+                                    $keysCount = 0;
+
+                                    foreach($item->keys as $key) {
+                                        $keysCount += 1;
+                                    }
                                 @endphp
                                 <tr>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $item->id }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-{{ Controller::statusColor($item->status) }} fs-6">{{ $item->name }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ $price . $currency }}</span></td>
+                                    <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ number_format($keysCount) }} Key</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</span></td>
                                     <td><span class="align-middle badge fw-semibold text-dark fs-6">{{ Controller::userUsername($item->registrar) }}</span></td>
                                     <td>
