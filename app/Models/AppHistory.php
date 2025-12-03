@@ -11,6 +11,7 @@ class AppHistory extends Model
     protected $fillable = [
         'app_id',
         'type',
+        'user',
         'created_at',
         'updated_at',
     ];

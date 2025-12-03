@@ -7,7 +7,7 @@
 @endphp
 
 @section('content')
-    <div class="col-lg-11">
+    <div class="col-lg-10">
         @include('Layout.msgStatus')
         <div class="card shadow-sm">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
@@ -19,7 +19,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($apps->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -130,6 +130,7 @@
                 columnDefs: [
                     { targets: -1, searchable: false },
                     { targets: [0, 1, 2, 4], searchable: true },
+                    { targets: [5], visible: false, searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($reffs->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -38,7 +38,7 @@
                                     <td>{{ $item->id }}</td>
                                     <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur copy-trigger" data-copy="{{ $item->code }}">{{ $item->code }}</span></td>
                                     <td class="text-{{ Controller::statusColor($item->status) }}">{{ $item->status }}</td>
-                                    <td>{{ DashController::UsersCreated($item->edit_id) }}</td>
+                                    <td>{{ DashController::UsersCreated($item->edit_id) }} Users</td>
                                     <td>{{ Controller::userUsername($item->registrar) }}</td>
                                     <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
                                     <td>
@@ -103,7 +103,8 @@
                 order: [[0,'desc']],
                 columnDefs: [
                     { targets: [5, 6], searchable: false },
-                    { targets: [0, 1, 2, 3, 4], searchable: true },
+                    { targets: [0, 1, 2, 3], searchable: true },
+                    { targets: [4], visible: false, searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

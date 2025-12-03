@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use App\Models\Key;
+use App\Models\KeyHistory;
 use App\Models\App;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -132,6 +133,14 @@ class KeyController extends Controller
                 'registrar'   => auth()->user()->user_id,
             ]);
 
+            $keys = Key::where('key', $key)->where('duration', $duration)->where('max_devices', $devices)->first();
+
+            KeyHistory::create([
+                'key_id' => $keys->edit_id,
+                'user'   => auth()->user()->user_id,
+                'type'   => 'Create',
+            ]);
+
             $msg = str_replace(':flag', "<b>Key</b> " . $key, $successMessage);
             return redirect()->route('keys.generate')->with('msgSuccess',
                 "
@@ -188,7 +197,7 @@ class KeyController extends Controller
                 return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
             }
         } else {
-            $key = Key::where('created_by', auth()->user()->user_id)->where('edit_id', $id)->first();
+            $key = Key::where('registrar', auth()->user()->user_id)->where('edit_id', $id)->first();
 
             if (empty($key)) {
                 return back()->withErrors(['name' => str_replace(':info', 'Error Code 403, <b>Access Forbidden</b>', $errorMessage),])->onlyInput('name');
@@ -238,7 +247,13 @@ class KeyController extends Controller
                 ]);
             }
 
-            return redirect()->route('keys.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "<b>Key</b> " . $keyName, $successMessage));
+            KeyHistory::create([
+                'key_id' => $key->edit_id,
+                'user'   => auth()->user()->user_id,
+                'type'   => 'Update',
+            ]);
+
+            return redirect()->route('keys')->with('msgSuccess', str_replace(':flag', "<b>Key</b> " . $keyName, $successMessage));
         } catch (\Exception $e) {
             return back()->withErrors(['name' => str_replace(':info', 'Error Code 203', $errorMessage),])->onlyInput('name');
         }

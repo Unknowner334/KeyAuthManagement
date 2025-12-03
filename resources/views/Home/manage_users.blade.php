@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($users->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -126,7 +126,8 @@
                 order: [[0,'desc']],
                 columnDefs: [
                     { targets: [7, 8], searchable: false },
-                    { targets: [0, 1, 2, 4, 5, 6], searchable: true },
+                    { targets: [0, 1, 2, 4], searchable: true },
+                    { targets: [5, 6], visible: false, searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

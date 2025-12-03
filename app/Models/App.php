@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Key;
+use App\Models\AppHistory;
 
 class App extends Model
 {
@@ -39,11 +40,17 @@ class App extends Model
 
         static::deleting(function ($app) {
             $app->keys()->delete();
+            $app->histories()->delete();
         });
     }
 
     public function keys()
     {
         return $this->hasMany(Key::class, 'app_id', 'app_id');
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(AppHistory::class, 'app_id', 'edit_id');
     }
 }

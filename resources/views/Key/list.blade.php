@@ -8,7 +8,7 @@
 @endphp
 
 @section('content')
-    <div class="col-lg-12">
+    <div class="col-lg-10">
         @include('Layout.msgStatus')
         <div class="card shadow-sm">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     @if ($keys->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer">
+                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -32,6 +32,7 @@
                                     <th>Duration</th>
                                     <th>Created</th>
                                     <th>Registrar</th>
+                                    <th>Price</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -63,12 +64,13 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $owner }}</td>
-                                    <td class="text-{{ Controller::statusColor($item->app->status) }}">{{ $item->app->name ?? 'N/A' }}</td>
-                                    <td title="{{ number_format($raw_price) . $currency }}"><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur px-3 copy-trigger" data-copy="{{ $item->key }}">{{ $item->key }}</span></td>
+                                    <td>{{ $item->app->name ?? 'N/A' }}</td>
+                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur px-3 copy-trigger" data-copy="{{ $item->key }}">{{ $item->key }}</span></td>
                                     <td><span class="align-middle badge fw-normal text-white bg-dark fs-6">{{ KeyController::DevicesHooked($item->devices) }}/{{ $item->max_devices ?? 'N/A' }}</span></td>
                                     <td class="text-{{ KeyController::RemainingDaysColor(KeyController::RemainingDays($item->expire_date)) }}">{{ KeyController::RemainingDays($item->expire_date) }}/{{ $item->duration ?? 'N/A' }} Days</td>
                                     <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) ?? 'N/A' }}</i></td>
                                     <td>{{ Controller::userUsername($item->registrar) }}</td>
+                                    <td title="{{ $raw_price . $currency }}">{{ $price . $currency }}</td>
                                     <td>
                                         <button type="button" class="btn btn-outline-danger btn-sm resetApiKey" data-id="{{ $item->edit_id }}">
                                             <i class="bi bi-bootstrap-reboot"></i>
@@ -85,7 +87,7 @@
                         <table class="table table-sm table-bordered table-hover text-center">
                             <thead>
                                 <tr>
-                                    <th colspan="9"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>keys</strong> to show</span></th>
+                                    <th colspan="10"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>keys</strong> to show</span></th>
                                 </tr>
                             </thead>
                         </table>
@@ -134,8 +136,9 @@
                 ordering: true,
                 order: [[0,'desc']],
                 columnDefs: [
-                    { targets: [4, 7], searchable: false },
-                    { targets: [0, 1, 2, 3, 5, 6], searchable: true },
+                    { targets: [4], searchable: false },
+                    { targets: [0, 3, 5, 6, 8], searchable: true },
+                    { targets: [1, 2, 7], visible: false, searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });

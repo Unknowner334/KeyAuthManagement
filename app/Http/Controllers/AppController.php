@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use App\Models\App;
+use App\Models\AppHistory;
 use Illuminate\Validation\Rule;
 
 class AppController extends Controller
@@ -42,6 +43,14 @@ class AppController extends Controller
                 'price'       => $request->input('price'),
                 'status'      => $request->input('status'),
                 'registrar'  => auth()->user()->user_id,
+            ]);
+
+            $app = App::where('name', $request->input('name'))->where('price', $request->input('price'))->first();
+
+            AppHistory::create([
+                'app_id' => $app->edit_id,
+                'user'   => auth()->user()->user_id,
+                'type'   => 'Create',
             ]);
 
             return redirect()->route('apps.generate')->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage));
@@ -92,8 +101,7 @@ class AppController extends Controller
                 'max:50',
                 Rule::unique('apps', 'name')->ignore($app->edit_id, 'edit_id')
             ],
-            'basic'   => 'required|integer|min:250|max:300000',
-            'premium' => 'required|integer|min:250|max:300000',
+            'price'   => 'required|integer|min:250|max:300000',
             'status'  => 'required|in:Active,Inactive',
         ]);
 
@@ -104,6 +112,12 @@ class AppController extends Controller
                 'ppd_basic'   => $request->input('basic'),
                 'ppd_premium' => $request->input('premium'),
                 'status'      => $request->input('status'),
+            ]);
+
+            AppHistory::create([
+                'app_id' => $app->edit_id,
+                'user'   => auth()->user()->user_id,
+                'type'   => 'Create',
             ]);
 
             return redirect()->route('apps.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage));

@@ -36,14 +36,16 @@ return new class extends Migration
 
         Schema::create('key_history', function(Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('key_id');
+            $table->string('key_id');
+            $table->string('user');
             $table->enum('type', ['Create', 'Update'])->default('Create');
             $table->timestamps();
         });
 
         Schema::create('app_history', function(Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('app_id');
+            $table->string('app_id');
+            $table->string('user');
             $table->enum('type', ['Create', 'Update'])->default('Create');
             $table->timestamps();
         });
