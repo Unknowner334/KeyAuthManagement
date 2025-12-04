@@ -23,8 +23,8 @@
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-control">
                             <option value="">-- Select Status --</option>
-                            <option value="Active" @if ($reff->status == "Active") selected @endif>Active</option>
-                            <option value="Inactive" @if ($reff->status == "Inactive") selected @endif>Inactive</option>
+                            <option value="Active" class="text-success" @if ($reff->status == "Active") selected @endif>Active</option>
+                            <option value="Inactive" class="text-danger" @if ($reff->status == "Inactive") selected @endif>Inactive</option>
                         </select>
                     </div>
 
@@ -57,7 +57,31 @@
                 confirmButtonText: 'Yes, edit'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('updateForm').submit();
+                    $('#updateForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#updateForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('admin.referrable.edit.post') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        showMessage('Success', response.message);
+                    } else {
+                        showMessage('Error', response.message);
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });
@@ -73,7 +97,34 @@
                 confirmButtonText: 'Yes, delete'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('deleteForm').submit();
+                    $('#deleteForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#deleteForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('admin.referrable.delete') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        const $msg = showMessage('Success', response.message);
+                        $msg.then(() => {
+                            window.location.href = "{{ route('admin.referrable') }}"
+                        });
+                    } else {
+                        showMessage('Error', response.message);
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });

@@ -31,12 +31,40 @@ class DashController extends Controller
     }
 
     public function managereferrable() {
-        $errorMessage = Config::get('messages.error.validation');
-        $reffs = Reff::get();
-
         parent::require_ownership();
         
-        return view('Home.manage_reff', compact('reffs'));
+        return view('Home.manage_reff');
+    }
+
+    public function managereferrabledata() {
+        parent::require_ownership();
+        
+        $reffs = Reff::get();
+
+        $data = $reffs->map(function ($reff) {
+            $created = Controller::timeElapsed($reff->created_at);
+            $reffStatus = Controller::statusColor($reff->status);
+            $users = 0;
+
+            foreach($reff->users as $user) {
+                $users += 1;
+            }
+
+            return [
+                'id'        => $reff->id,
+                'edit_id'   => $reff->edit_id,
+                'code'      => "<span class='align-middle badge fw-normal text-$reffStatus fs-6 blur Blur px-3 copy-trigger' data-copy='$reff->code'>$reff->code</span>",
+                'status'    => "<span class='align-middle badge fw-normal text-$reffStatus fs-6'>$reff->status</span>",
+                'registrar' => Controller::userUsername($reff->registrar),
+                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
+                'users'     => $users . " Users",
+            ];
+        });
+
+        return response()->json([
+            'status' => 0,
+            'data'   => $data
+        ]);
     }
 
     public function managereferrablegenerate() {
@@ -83,9 +111,15 @@ class DashController extends Controller
                 'registrar'   => auth()->user()->user_id,
             ]);
 
-            return redirect()->route('admin.referrable.generate')->with('msgSuccess', str_replace(':flag', "<b>Reff</b> " . $code, $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>Reff</b> " . $code, $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 
@@ -116,7 +150,7 @@ class DashController extends Controller
         $reff = Reff::where('edit_id', $request->input('edit_id'))->first();
 
         if (empty($reff)) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 203', $errorMessage),])->onlyInput('name');
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
 
         if ($request->input('code') == '') {
@@ -144,9 +178,15 @@ class DashController extends Controller
                 'status' => $request->input('status'),
             ]);
 
-            return redirect()->route('admin.referrable.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "<b>Reff</b> " . $code, $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>Reff</b> " . $code, $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 
@@ -163,7 +203,7 @@ class DashController extends Controller
         $reff = Reff::where('edit_id', $request->input('edit_id'))->first();
 
         if (empty($reff)) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 203', $errorMessage),])->onlyInput('name');
+            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
         }
 
         $code = $reff->code;
@@ -171,9 +211,15 @@ class DashController extends Controller
         try {
             $reff->delete();
 
-            return redirect()->route('admin.referrable')->with('msgSuccess', str_replace(':flag', "<b>Reff</b> " . $code, $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>Reff</b> " . $code, $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 }

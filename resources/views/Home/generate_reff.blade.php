@@ -21,8 +21,8 @@
                         <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-control">
                             <option value="">-- Select Status --</option>
-                            <option value="Active" selected>Active</option>
-                            <option value="Inactive">Inactive</option>
+                            <option value="Active" class="text-success" selected>Active</option>
+                            <option value="Inactive" class="text-danger">Inactive</option>
                         </select>
                     </div>
 
@@ -49,7 +49,32 @@
                 confirmButtonText: 'Yes, Register'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('registerForm').submit();
+
+                    $('#registerForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#registerForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('admin.referrable.generate.post') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        showMessage('Success', response.message);
+                    } else {
+                        showMessage('Error', response.message);
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });

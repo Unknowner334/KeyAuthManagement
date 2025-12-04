@@ -41,17 +41,22 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
     Route::post('/admin/users/delete', [UserController::class, 'manageusersdelete'])->name('admin.users.delete');
     Route::post('/admin/users/wallet', [UserController::class, 'manageuserssaldoedit_action'])->name('admin.users.wallet.post');
 
-    // * Manage Referrables
+    // * Manage Referrables View
     Route::get('/admin/referrables', [DashController::class, 'managereferrable'])->name('admin.referrable');
-    Route::get('/admin/referrables/{id}', [DashController::class, 'managereferrableedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.referrable.edit');
+    Route::get('/admin/referrables/{id?}', [DashController::class, 'managereferrableedit'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.referrable.edit');
     Route::get('/admin/referrables/generate', [DashController::class, 'managereferrablegenerate'])->name('admin.referrable.generate');
+    
+    // * Manage Referrable AJAX
+    Route::get('/admin/referrables/data', [DashController::class, 'managereferrabledata'])->name('admin.referrable.data');
+
+    // * Manage Referrable Manage
     Route::post('/admin/referrables/update', [DashController::class, 'managereferrableedit_action'])->name('admin.referrable.edit.post');
     Route::post('/admin/referrables/generate', [DashController::class, 'managereferrablegenerate_action'])->name('admin.referrable.generate.post');
     Route::post('/admin/referrables/delete', [DashController::class, 'managereferrabledelete'])->name('admin.referrable.delete');
 
     // * Settings
     Route::get('/settings', [SettingController::class, 'settings'])->name('settings');
-    Route::post('/settings/username-change', [SettingController::class, 'settingssusername'])->name('settings.username');
+    Route::post('/settings/username-change', [SettingController::class, 'settingsusername'])->name('settings.username');
     Route::post('/settings/name-change', [SettingController::class, 'settingsname'])->name('settings.name');
     Route::post('/settings/password-change', [SettingController::class, 'settingspassword'])->name('settings.password');
 

@@ -138,7 +138,7 @@
                 }
             });
 
-            $('.copy-trigger').click(async function() {
+            $(document).on('click', '.copy-trigger', async function() {
                 const copy = $(this).data('copy');
 
                 const code = await copyToClipboard(copy);

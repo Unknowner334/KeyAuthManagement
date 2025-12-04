@@ -14,50 +14,26 @@
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 Referrables Registered
                 <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-light btn-sm ms-1" id="reloadBtn"><i class="bi bi-arrow-clockwise"></i> REFRESH</button>
                     <a class="btn btn-outline-light btn-sm" href={{ route('admin.referrable.generate') }}><i class="bi bi-person-add"></i> REFF</a>
                     <button class="btn btn-secondary btn-sm ms-1" id="blur-out" data-bs-toggle="tooltip" data-bs-placement="top" title="Eye Protect"><i class="bi bi-eye-slash"></i></button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    @if ($reffs->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Code</th>
-                                    <th>Status</th>
-                                    <th>Users Count</th>
-                                    <th>Registrar</th>
-                                    <th>Created</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            @foreach ($reffs as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur copy-trigger" data-copy="{{ $item->code }}">{{ $item->code }}</span></td>
-                                    <td class="text-{{ Controller::statusColor($item->status) }}">{{ $item->status }}</td>
-                                    <td>{{ DashController::UsersCreated($item->edit_id) }} Users</td>
-                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
-                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
-                                    <td>
-                                        <a href={{ route('admin.referrable.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    @else
-                        <table class="table table-sm table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th colspan="7"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>referrables</strong> to show</span></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    @endif
+                    <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Status</th>
+                                <th>Users Count</th>
+                                <th>Registrar</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -96,11 +72,36 @@
         }
 
         $(document).ready(function() {
-            $('#datatable').DataTable({
+            const table = $('#datatable').DataTable({
+                processing: true,
+                responsive: true,
                 pageLength: 10,
                 lengthChange: true,
                 ordering: true,
                 order: [[0,'desc']],
+                ajax: {
+                    url: '{{ route('admin.referrable.data') }}',
+                    type: 'GET',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'code' },
+                    { data: 'status' },
+                    { data: 'users' },
+                    { data: 'registrar' },
+                    { data: 'created' },
+                    {
+                        data: 'edit_id',
+                        render: function(data, type, row) {
+                            let url = `{{ route('admin.referrable.edit') }}/${data}`
+                            return `
+                            <a href="${url}" class="btn btn-outline-dark btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>`;
+                        }
+                    },
+                ],
                 columnDefs: [
                     { targets: [5, 6], searchable: false },
                     { targets: [0, 1, 2, 3], searchable: true },
@@ -109,17 +110,11 @@
                 ]
             });
 
-            $("#blur-out").click(function() {
-                if ($(".Blur").hasClass("blur")) {
-                    $(".Blur").removeClass("blur");
-                    $("#blur-out").html(`<i class="bi bi-eye"></i>`);
-                } else {
-                    $(".Blur").addClass("blur");
-                    $("#blur-out").html(`<i class="bi bi-eye-slash"></i>`);
-                }
+            $('#reloadBtn').on('click', function () {
+                table.ajax.reload(null, false);
             });
 
-            $('.copy-trigger').click(async function() {
+            $(document).on('click', '.copy-trigger', async function() {
                 const copy = $(this).data('copy');
 
                 const code = await copyToClipboard(copy);
