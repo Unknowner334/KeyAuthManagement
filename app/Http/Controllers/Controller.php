@@ -94,6 +94,24 @@ abstract class Controller
         return $data;
     }
 
+    static function priceFormat($price, $raw_price) {
+        if ($raw_price < 10000) {
+            $price = $price;
+        } else if ($raw_price >= 10000 && $raw_price < 1000000) {
+            $price = number_format($raw_price / 1000) . 'k';
+        } else if ($raw_price >= 1000000 && $raw_price < 1000000000) {
+            $price = number_format($raw_price / 1000000) . 'm';
+        } else if ($raw_price >= 1000000000 && $raw_price < 1000000000000) {
+            $price = number_format($raw_price / 1000000000) . 'b';
+        } else if ($raw_price >= 1000000000000) {
+            $price = number_format($raw_price / 1000000000000) . 't';
+        } else {
+            $price = "N/A";
+        }
+
+        return $price;
+    }
+
     static function require_ownership($allow_manager = 0, $fail = 1) {
         $user = auth()->user();
         $errorMessage = Config::get('messages.error.validation');

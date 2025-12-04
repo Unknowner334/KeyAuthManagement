@@ -63,8 +63,9 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
 
     // * Licenses
     Route::get('/licenses', [LicenseController::class, 'licenselist'])->name('licenses');
-    Route::get('/licenses/{id}', [LicenseController::class, 'licenseedit'])->where('id', '[0-9a-fA-F-]{36}')->name('licenses.edit');
-    Route::get('/licenses/resetApiKey/{id}', [LicenseController::class, 'licenseresetapi'])->where('id', '[0-9a-fA-F-]{36}')->name('licenses.resetApiKey');
+    Route::get('/licenses/data', [LicenseController::class, 'licensedata'])->name('licenses.data');
+    Route::get('/licenses/{id?}', [LicenseController::class, 'licenseedit'])->where('id', '[0-9a-fA-F-]{36}')->name('licenses.edit');
+    Route::get('/licenses/resetApiKey/{id?}', [LicenseController::class, 'licenseresetapi'])->where('id', '[0-9a-fA-F-]{36}')->name('licenses.resetApiKey');
     Route::get('/licenses/generate', [LicenseController::class, 'licensegenerate'])->name('licenses.generate');
     Route::post('/licenses/update', [LicenseController::class, 'licenseedit_action'])->name('licenses.edit.post');
     Route::post('/licenses/delete', [LicenseController::class, 'licensedelete'])->name('licenses.delete');

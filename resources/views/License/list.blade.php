@@ -20,78 +20,22 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    @if ($licenses->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Owner</th>
-                                    <th>App</th>
-                                    <th>User Licenses</th>
-                                    <th>Devices</th>
-                                    <th>Duration</th>
-                                    <th>Created</th>
-                                    <th>Registrar</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            @foreach ($licenses as $item)
-                                @php
-                                    if ($item->owner == NULL) {
-                                        $owner = "N/A";
-                                    } else {
-                                        $owner = $item->owner;
-                                    }
-
-                                    $price = number_format(LicenseController::licensePriceCalculator($item->app->price, $item->max_devices, $item->duration));
-                                    $raw_price = LicenseController::licensePriceCalculator($item->app->price, $item->max_devices, $item->duration);
-
-                                    if ($raw_price < 10000) {
-                                        $price = $price;
-                                    } else if ($raw_price >= 10000 && $raw_price < 1000000) {
-                                        $price = number_format($raw_price / 1000) . 'k';
-                                    } else if ($raw_price >= 1000000 && $raw_price < 1000000000) {
-                                        $price = number_format($raw_price / 1000000) . 'm';
-                                    } else if ($raw_price >= 1000000000 && $raw_price < 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000) . 'b';
-                                    } else if ($raw_price >= 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000000) . 't';
-                                    } else {
-                                        $price = "N/A";
-                                    }
-                                @endphp
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $owner }}</td>
-                                    <td>{{ $item->app->name ?? 'N/A' }}</td>
-                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 blur Blur px-3 copy-trigger" data-copy="{{ $item->license }}">{{ $item->license }}</span></td>
-                                    <td><span class="align-middle badge fw-normal text-white bg-dark fs-6">{{ LicenseController::DevicesHooked($item->devices) }}/{{ $item->max_devices ?? 'N/A' }}</span></td>
-                                    <td class="text-{{ LicenseController::RemainingDaysColor(LicenseController::RemainingDays($item->expire_date)) }}">{{ LicenseController::RemainingDays($item->expire_date) }}/{{ $item->duration ?? 'N/A' }} Days</td>
-                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) ?? 'N/A' }}</i></td>
-                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
-                                    <td title="{{ $raw_price . $currency }}">{{ $price . $currency }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-danger btn-sm resetApiKey" data-id="{{ $item->edit_id }}">
-                                            <i class="bi bi-bootstrap-reboot"></i>
-                                        </button>
-
-                                        <a href={{ route('licenses.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    @else
-                        <table class="table table-sm table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th colspan="10"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>licenses</strong> to show</span></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    @endif
+                    <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Owner</th>
+                                <th>App</th>
+                                <th>User Licenses</th>
+                                <th>Devices</th>
+                                <th>Duration</th>
+                                <th>Created</th>
+                                <th>Registrar</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -131,10 +75,37 @@
 
         $(document).ready(function() {
             $('#datatable').DataTable({
+                processing: true,
                 pageLength: 10,
                 lengthChange: true,
                 ordering: true,
                 order: [[0,'desc']],
+                ajax: {
+                    url: '{{ route('licenses.data') }}',
+                    type: 'GET',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'owner' },
+                    { data: 'app' },
+                    { data: 'user_key' },
+                    { data: 'devices' },
+                    { data: 'duration' },
+                    { data: 'created' },
+                    { data: 'registrar' },
+                    { data: 'price' },
+                    {
+                        data: 'edit_id',
+                        render: function(data, type, row) {
+                            let url = `{{ route('licenses.edit') }}/${data}`;
+                            return `
+                            <button type="button" class="btn btn-outline-danger btn-sm resetApiKey" data-id="${data}"><i class="bi bi-bootstrap-reboot"></i></button>
+                            <a href='${url}' class="btn btn-outline-dark btn-sm"><i class="bi bi-pencil-square"></i></a>
+                            `;
+                        }
+                    }
+                ],
                 columnDefs: [
                     { targets: [4], searchable: false },
                     { targets: [0, 3, 5, 6, 8], searchable: true },
@@ -153,7 +124,7 @@
                 }
             });
 
-            $('.resetApiKey').click(function() {
+            $(document).on('click', '.resetApiKey', function() {
                 const id = $(this).data('id');
 
                 Swal.fire({
@@ -171,7 +142,9 @@
                             title: 'Please wait...'
                         })
 
-                        window.location.href = `/licenses/resetApiKey/${id}`;
+                        const url = "{{ route('licenses.resetApiKey') }}"
+
+                        window.location.href = `${url}/${id}`;
                     }
                 });
             });

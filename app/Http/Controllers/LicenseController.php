@@ -69,14 +69,48 @@ class LicenseController extends Controller
     }
 
     public function licenselist(Request $request) {
+        return view('License.list');
+    }
+
+    public function licensedata() {
         if (parent::require_ownership(1, 0)) {
             $licenses = License::get();
         } else {
             $licenses = License::where('registrar', auth()->user()->user_id)->get();
         }
-        $currency = Config::get('messages.settings.currency');
 
-        return view('License.list', compact('licenses', 'currency'));
+        $data = $licenses->map(function ($license) {
+            if ($license->owner == "") $owner = "N/A"; else $owner = $license->owner;
+
+            $currency = Config::get('messages.settings.currency');
+            $devices = $this->DevicesHooked($license->devices) . '/' . $license->max_devices;
+            $duration = $license->duration . " Days";
+            $created = Controller::timeElapsed($license->created_at);
+            $licenseStatus = Controller::statusColor($license->status);
+
+            $price = number_format(LicenseController::licensePriceCalculator($license->app->price, $license->max_devices, $license->duration));
+            $raw_price = LicenseController::licensePriceCalculator($license->app->price, $license->max_devices, $license->duration);
+            $price = Controller::priceFormat($price, $raw_price);
+            $raw_price = number_format($raw_price);
+
+            return [
+                'id'        => $license->id,
+                'edit_id'   => $license->edit_id,
+                'owner'     => $owner,
+                'app'       => $license->app->name,
+                'user_key'  => "<span class='align-middle badge fw-normal text-$licenseStatus fs-6 blur Blur px-3 copy-trigger' data-copy='$license->license'>$license->license</span>",
+                'devices'   => "<span class='align-middle badge fw-normal text-white bg-dark fs-6'>$devices</span>",
+                'duration'  => $duration,
+                'registrar' => Controller::userUsername($license->registrar),
+                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
+                'price'     => "<span class='align-middle badge fw-normal text-dark fs-6' title='$raw_price$currency'>$price$currency</span>",
+            ];
+        });
+
+        return response()->json([
+            'status' => 0,
+            'data'   => $data
+        ]);
     }
 
     public function licensegenerate() {
@@ -292,7 +326,7 @@ class LicenseController extends Controller
         }
     }
 
-    public function licenseresetapi($id) {
+    public function licenseresetapi($id = "") {
         $successMessage = Config::get('messages.success.reseted');
         $errorMessage = Config::get('messages.error.validation');
 
