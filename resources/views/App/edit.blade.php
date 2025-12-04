@@ -90,7 +90,31 @@
                         title: 'Please wait...'
                     })
 
-                    document.getElementById('updateForm').submit();
+                    $('#updateForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#updateForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('apps.edit.post') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        showMessage('Success', response.message);
+                    } else {
+                        showMessage('Error', response.message)
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });
@@ -132,7 +156,31 @@
                         title: 'Please wait...'
                     })
 
-                    document.getElementById('deleteLicensesForm').submit();
+                    $('#deleteLicensesForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#deleteLicensesForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('apps.delete.licenses') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        showMessage('Success', response.message);
+                    } else {
+                        showMessage('Error', response.message)
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });
@@ -153,7 +201,31 @@
                         title: 'Please wait...'
                     })
 
-                    document.getElementById('deleteLicensesMeForm').submit();
+                    $('#deleteLicensesMeForm').trigger('submit');
+                }
+            });
+        });
+
+        $('#deleteLicensesMeForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('apps.delete.licenses.me') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status == 0) {
+                        showMessage('Success', response.message);
+                    } else {
+                        showMessage('Error', response.message)
+                    }
+                },
+                error: function (xhr) {
+                    showMessage('Error', xhr.responseJSON.message);
                 }
             });
         });

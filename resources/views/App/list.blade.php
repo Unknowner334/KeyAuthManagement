@@ -18,72 +18,19 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    @if ($apps->isNotEmpty())
-                        <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Licenses Count</th>
-                                    <th>Created</th>
-                                    <th>Registrar</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            @foreach ($apps as $item)
-                                @php
-                                    $price = number_format($item->price);
-                                    $raw_price = $item->price;
-
-                                    if ($raw_price < 10000) {
-                                        $price = $price;
-                                    } else if ($raw_price >= 10000 && $raw_price < 1000000) {
-                                        $price = number_format($raw_price / 1000) . 'k';
-                                    } else if ($raw_price >= 1000000 && $raw_price < 1000000000) {
-                                        $price = number_format($raw_price / 1000000) . 'm';
-                                    } else if ($raw_price >= 1000000000 && $raw_price < 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000) . 'b';
-                                    } else if ($raw_price >= 1000000000000) {
-                                        $price = number_format($raw_price / 1000000000000) . 't';
-                                    } else {
-                                        $price = "N/A";
-                                    }
-
-                                    $licensesCount = 0;
-
-                                    foreach($item->licenses as $license) {
-                                        $licensesCount += 1;
-                                    }
-                                @endphp
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td><span class="align-middle badge fw-normal text-{{ Controller::statusColor($item->status) }} fs-6 px-3">{{ $item->name }}</span></td>
-                                    <td title="{{ number_format($raw_price) }}">{{ $price . $currency }}</td>
-                                    <td>{{ number_format($licensesCount) }} License</td>
-                                    <td><i class="align-middle badge fw-normal text-dark fs-6">{{ Controller::timeElapsed($item->created_at) }}</i></td>
-                                    <td>{{ Controller::userUsername($item->registrar) }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-dark btn-sm copy-trigger" data-name="{{ $item->name }}" data-copy="{{ $item->app_id }}">
-                                            <i class="bi bi-clipboard"></i>
-                                        </button>
-
-                                        <a href={{ route('apps.edit', ['id' => $item->edit_id]) }} class="btn btn-outline-dark btn-sm">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    @else
-                        <table class="table table-sm table-bordered table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th colspan="6"><span class="align-middle badge text-dark fs-6 fw-normal">There are no <strong>apps</strong> to show</span></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    @endif
+                    <table id="datatable" class="table table-bordered table-hover text-center dataTable no-footer" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Licenses Count</th>
+                                <th>Created</th>
+                                <th>Registrar</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -123,19 +70,43 @@
 
         $(document).ready(function() {
             $('#datatable').DataTable({
+                processing: true,
                 pageLength: 10,
                 lengthChange: true,
                 ordering: true,
                 order: [[0,'desc']],
+                ajax: {
+                    url: '{{ route('apps.data') }}',
+                    type: 'GET',
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'name' },
+                    { data: 'price' },
+                    { data: 'licenses' },
+                    { data: 'created' },
+                    { data: 'registrar' },
+                    {
+                        data: 'ids',
+                        render: function(data, type, row) {
+                            let url = `{{ route('apps.edit') }}/${data[0]}`;
+                            return `
+                            <button type="button" class="btn btn-outline-dark btn-sm copy-trigger" data-copy="${data[1]}" data-name="${data[2]}"><i class="bi bi-clipboard"></i></button>
+                            <a href='${url}' class="btn btn-outline-dark btn-sm"><i class="bi bi-pencil-square"></i></a>
+                            `;
+                        }
+                    }
+                ],
                 columnDefs: [
-                    { targets: -1, searchable: false },
-                    { targets: [0, 1, 2, 4], searchable: true },
+                    { targets: [4], searchable: false },
+                    { targets: [0, 1, 2, 3], searchable: true },
                     { targets: [5], visible: false, searchable: true },
                     { orderable: false, targets: -1 }
                 ]
             });
 
-            $('.copy-trigger').click(async function() {
+            $(document).on('click', '.copy-trigger', async function() {
                 const copy = $(this).data('copy');
                 const name = $(this).data('name');
 
@@ -146,7 +117,7 @@
 
                 switch (code) {
                     case 0:
-                        message = `<b>App</b> ${name} <b>App ID Successfully Copied</b>`;
+                        message = `<b>App</b> ${name} <b>App's ID Successfully Copied</b>`;
                         icon = "success";
                         break;
                     case 1:

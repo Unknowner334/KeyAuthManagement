@@ -11,10 +11,43 @@ use Illuminate\Validation\Rule;
 class AppController extends Controller
 {
     public function applist(Request $request) {
-        $apps = App::get();
-        $currency = Config::get('messages.settings.currency');
+        return view('App.list');
+    }
 
-        return view('App.list', compact('apps', 'currency'));
+    public function appdata() {
+        $apps = App::get();
+
+        $data = $apps->map(function ($app) {
+            $currency = Config::get('messages.settings.currency');
+            $created = Controller::timeElapsed($app->created_at);
+            $price = number_format($app->price);
+            $raw_price = $app->price;
+            $price = Controller::priceFormat($price, $raw_price);
+            $raw_price = number_format($raw_price);
+            $appStatus = Controller::statusColor($app->status);
+            $licenses = 0;
+
+            $ids = [$app->edit_id, $app->app_id, $app->name];
+
+            foreach ($app->licenses as $license) {
+                $licenses += 1;
+            }
+
+            return [
+                'id'        => $app->id,
+                'ids'       => $ids,
+                'name'      => "<span class='align-middle badge fw-normal text-$appStatus fs-6 px-3'>$app->name</span>",
+                'licenses'  => "$licenses License",
+                'registrar' => Controller::userUsername($app->registrar),
+                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
+                'price'     => "<span class='align-middle badge fw-normal text-dark fs-6' title='$raw_price$currency'>$price$currency</span>",
+            ];
+        });
+
+        return response()->json([
+            'status' => 0,
+            'data'   => $data
+        ]);
     }
 
     public function appgenerate() {
@@ -53,9 +86,15 @@ class AppController extends Controller
                 'type'   => 'Create',
             ]);
 
-            return redirect()->route('apps.generate')->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 
@@ -109,6 +148,7 @@ class AppController extends Controller
             $app->update([
                 'app_id'      => $request->input('id'),
                 'name'        => $request->input('name'),
+                'price'       => $request->input('price'),
                 'ppd_basic'   => $request->input('basic'),
                 'ppd_premium' => $request->input('premium'),
                 'status'      => $request->input('status'),
@@ -120,9 +160,15 @@ class AppController extends Controller
                 'type'   => 'Create',
             ]);
 
-            return redirect()->route('apps.edit', $request->input('edit_id'))->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>App</b> " . $request->input('name'), $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 202', $errorMessage),
+            ]);
         }
     }
 
@@ -162,9 +208,15 @@ class AppController extends Controller
             $name = $app->name;
             $app->licenses()->delete();
 
-            return redirect()->route('apps')->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $name . "<b>'s Licenses</b>", $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>App</b> " . $name . "<b>'s Licenses</b>", $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 
@@ -181,9 +233,15 @@ class AppController extends Controller
             $name = $app->name;
             $app->licenses()->where('registrar', auth()->user()->user_id)->delete();
 
-            return redirect()->route('apps')->with('msgSuccess', str_replace(':flag', "<b>App</b> " . $name . "<b>'s Licenses</b>", $successMessage));
+            return response()->json([
+                'status' => 0,
+                'message' => str_replace(':flag', "<b>App</b> " . $name . "<b>'s Licenses</b>", $successMessage),
+            ]);
         } catch (\Exception $e) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 201', $errorMessage),])->onlyInput('name');
+            return response()->json([
+                'status' => 1,
+                'message' => str_replace(':info', 'Error Code 201', $errorMessage),
+            ]);
         }
     }
 }

@@ -51,10 +51,15 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
     Route::post('/settings/name-change', [SettingController::class, 'settingsname'])->name('settings.name');
     Route::post('/settings/password-change', [SettingController::class, 'settingspassword'])->name('settings.password');
 
-    // * Apps
+    // * Apps View
     Route::get('/apps', [AppController::class, 'applist'])->name('apps');
-    Route::get('/apps/{id}', [AppController::class, 'appedit'])->where('id', '[0-9a-fA-F-]{36}')->name('apps.edit');
+    Route::get('/apps/{id?}', [AppController::class, 'appedit'])->where('id', '[0-9a-fA-F-]{36}')->name('apps.edit');
     Route::get('/apps/generate', [AppController::class, 'appgenerate'])->name('apps.generate');
+
+    // * Apps AJAX
+    Route::get('/apps/data', [AppController::class, 'appdata'])->name('apps.data');
+
+    // * Apps Manage
     Route::post('/apps/update', [AppController::class, 'appedit_action'])->name('apps.edit.post');
     Route::post('/apps/delete', [AppController::class, 'appdelete'])->name('apps.delete');
     Route::post('/apps/delete/licenses', [AppController::class, 'appdeletelicenses'])->name('apps.delete.licenses');
