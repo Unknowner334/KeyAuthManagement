@@ -295,16 +295,41 @@ class UserController extends Controller
         }
     }
 
-    public function manageusershistoryuser($id) {
-        $errorMessage = Config::get('messages.error.validation');
+    public function manageusershistoryuser() {
+        return view('Home.history_user');
+    }
+
+    public function manageusershistorydata($id) {
+        parent::require_ownership(1);
+        
         $histories = UserHistory::where('user_id', $id)->get();
 
-        parent::require_ownership(1);
+        $data = $histories->map(function ($h) {
+            $created = Controller::timeElapsed($h->created_at);
 
-        if (empty($histories)) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
-        }
+            if ($h->user_id == NULL) {
+                $user_id = "N/A";
+            } else {
+                $user_id = Controller::censorText($h->user_id, 3);
+            }
 
-        return view('Home.history_user', compact('histories'));
+            $agent = Controller::censorText($h->user_agent, 10);
+
+            return [
+                'id'        => $h->id,
+                'user_id'   => $user_id,
+                'username'  => "<span class='align-middle badge fw-normal text-dark fs-6 blur Blur px-3'>$h->username</span>",
+                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
+                'status'    => $h->status,
+                'type'      => $h->type,
+                'ip'        => $h->ip_address,
+                'agent'     => "<span class='align-middle badge fw-normal text-dark fs-6 copy-trigger' data-copy='$h->user_agent'>$agent</span>",
+            ];
+        });
+
+        return response()->json([
+            'status' => 0,
+            'data'   => $data
+        ]);
     }
 }

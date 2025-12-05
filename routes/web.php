@@ -38,6 +38,7 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
 
     // * Manage Users AJAX
     Route::get('/admin/users/data', [UserController::class, 'manageusersdata'])->name('admin.users.data');
+    Route::get('/admin/users/history/data/{id?}', [UserController::class, 'manageusershistorydata'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.history.data');
 
     // * Manage Users Manage
     Route::post('/admin/users', [UserController::class, 'manageusersedit_action'])->where('id', '[0-9a-fA-F-]{36}')->name('admin.users.edit.post');

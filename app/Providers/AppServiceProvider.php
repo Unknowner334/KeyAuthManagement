@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $schedule = $this->app->make(Schedule::class);
 
-            $schedule->command('keys:deactivate-expired');
+            $schedule->command('licenses:deactivate-expired');
         }
     }
 }
