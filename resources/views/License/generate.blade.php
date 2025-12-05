@@ -84,10 +84,15 @@
                         
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
-                                <label for="estimation" class="form-label">Estimation</label>
-                                <input type="text" id="estimation" class="form-control" style="background-color: rgb(233, 236, 239); opacity: 1;" placeholder="Your order will total" readonly>
+                                <label for="price" class="form-label">License Price</label>
+                                <input type="text" id="price" class="form-control" style="background-color: rgb(233, 236, 239); opacity: 1;" placeholder="The license will cost" readonly>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="saldo" class="form-label">Saldo Cut</label>
+                        <input type="text" id="saldo" class="form-control" style="background-color: rgb(233, 236, 239); opacity: 1;" placeholder="Your order will total" readonly>
                     </div>
 
                     <div class="form-group">
@@ -167,8 +172,8 @@
             @endforeach
         };
 
-        function updateKeyGenerateEstimation() {
-            const estimationElem = document.getElementById('estimation');
+        function updateLicenseGenerateEstimation() {
+            const estimationElem = document.getElementById('price');
             if (!estimationElem) return;
 
             const appId = document.getElementById('app').value;
@@ -185,7 +190,7 @@
                 return;
             }
 
-            const basePrice =appPrices[appId].price;
+            const basePrice = appPrices[appId].price;
             const multiplier = duration / 30;
             const total = basePrice * multiplier * devices;
             const totalFormatted = numberFormat(total)
@@ -193,10 +198,33 @@
             estimationElem.value = `${totalFormatted}{{ $currency }}`;
         }
 
-        document.getElementById('app').addEventListener('change', updateKeyGenerateEstimation);
-        document.getElementById('duration').addEventListener('change', updateKeyGenerateEstimation);
-        document.getElementById('devices').addEventListener('input', updateKeyGenerateEstimation);
+        function updateSaldoCutEstimation() {
+            const estimationElem = document.getElementById('saldo');
+            if (!estimationElem) return;
 
-        updateKeyGenerateEstimation();
+            const duration = parseInt(document.getElementById('duration').value, 10);
+            const devices = parseInt(document.getElementById('devices').value, 10);
+
+            if (isNaN(duration) || isNaN(devices)) {
+                estimationElem.value = "Fill all fields";
+                return;
+            }
+
+            const basePrice = 10;
+            const multiplier = duration / 30;
+            const total = basePrice * multiplier * devices;
+            const totalFormatted = numberFormat(total)
+
+            estimationElem.value = `${totalFormatted}{{ $currency }}`;
+        }
+
+        document.getElementById('app').addEventListener('change', updateLicenseGenerateEstimation);
+        document.getElementById('duration').addEventListener('change', updateLicenseGenerateEstimation);
+        document.getElementById('devices').addEventListener('input', updateLicenseGenerateEstimation);
+        document.getElementById('duration').addEventListener('change', updateSaldoCutEstimation);
+        document.getElementById('devices').addEventListener('input', updateSaldoCutEstimation);
+
+        updateLicenseGenerateEstimation();
+        updateSaldoCutEstimation();
     </script>
 @endsection

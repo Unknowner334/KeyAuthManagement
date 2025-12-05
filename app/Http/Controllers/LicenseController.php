@@ -23,6 +23,18 @@ class LicenseController extends Controller
         return $total;
     }
 
+    static function saldoPriceCut($devices, $duration) {
+        $basePrice = 10;
+        $devices = (int) $devices;
+        $duration = (int) $duration;
+
+        $duration = $duration / 30;
+        $total = $basePrice * $duration * $devices;
+        $total = [$total, number_format($total)];
+
+        return $total;
+    }
+
     static function RemainingDays($expire_date) {
         if (empty($expire_date)) {
             return 'N/A';
@@ -89,9 +101,6 @@ class LicenseController extends Controller
             $licenseStatus = Controller::statusColor($license->status);
 
             $price = number_format(LicenseController::licensePriceCalculator($license->app->price, $license->max_devices, $license->duration));
-            $raw_price = LicenseController::licensePriceCalculator($license->app->price, $license->max_devices, $license->duration);
-            $price = Controller::priceFormat($price, $raw_price);
-            $raw_price = number_format($raw_price);
 
             return [
                 'id'        => $license->id,
@@ -103,7 +112,7 @@ class LicenseController extends Controller
                 'duration'  => $duration,
                 'registrar' => Controller::userUsername($license->registrar),
                 'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
-                'price'     => "<span class='align-middle badge fw-normal text-dark fs-6' title='$raw_price$currency'>$price$currency</span>",
+                'price'     => "$price$currency",
             ];
         });
 
@@ -139,18 +148,19 @@ class LicenseController extends Controller
 
         $now = Carbon::now();
         $expire_date = $now->addDays((int) $request->input('duration'));
-        $saldo_price = 10;
         $currency = Config::get('messages.settings.currency');
         $owner = $request->input('owner') ?? "";
         $duration = $request->input('duration');
         $status = $request->input('status');
         $devices = $request->input('devices');
         $appName = App::where('app_id', $request->input('app'))->first()->name;
+        $saldo_price = $this->saldoPriceCut($duration, $devices);
         $saldo = parent::saldoData(auth()->user()->saldo, auth()->user()->role, 1);
-        auth()->user()->deductSaldo($saldo_price);
+        auth()->user()->deductSaldo($saldo_price[0]);
 
         if (is_int($saldo[0])) {
-            $saldo_ext = (int) $saldo[0] - $saldo_price . $currency;
+            $saldo_ext = number_format($saldo[0] - $saldo_price[0]);
+            $saldo_ext = $saldo_ext . $currency . " Left";
         } else {
             $saldo_ext = $saldo[0];
         }
@@ -176,8 +186,10 @@ class LicenseController extends Controller
             ]);
 
             $msg = str_replace(':flag', "<b>License</b> " . $license, $successMessage);
+            $saldo_cut = $saldo_price[1];
             $msg = "
                 $msg <br>
+                <b>Saldo Cut: $saldo_cut$currency</b> <br>
                 <b>Saldo: $saldo_ext</b>
             ";
             return response()->json([

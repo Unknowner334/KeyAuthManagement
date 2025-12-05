@@ -110,7 +110,7 @@
                     if (response.status == 0) {
                         showMessage('Success', response.message);
                     } else {
-                        showMessage('Error', response.message)
+                        showMessage('Error', response.message);
                     }
                 },
                 error: function (xhr) {
@@ -203,7 +203,7 @@
                     if (response.status == 0) {
                         showMessage('Success', response.message);
                     } else {
-                        showMessage('Error', response.message)
+                        showMessage('Error', response.message);
                     }
                 },
                 error: function (xhr) {
@@ -248,7 +248,7 @@
                     if (response.status == 0) {
                         showMessage('Success', response.message);
                     } else {
-                        showMessage('Error', response.message)
+                        showMessage('Error', response.message);
                     }
                 },
                 error: function (xhr) {

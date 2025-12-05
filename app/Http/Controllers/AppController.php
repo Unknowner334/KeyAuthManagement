@@ -21,9 +21,6 @@ class AppController extends Controller
             $currency = Config::get('messages.settings.currency');
             $created = Controller::timeElapsed($app->created_at);
             $price = number_format($app->price);
-            $raw_price = $app->price;
-            $price = Controller::priceFormat($price, $raw_price);
-            $raw_price = number_format($raw_price);
             $appStatus = Controller::statusColor($app->status);
             $licenses = 0;
 
@@ -40,7 +37,7 @@ class AppController extends Controller
                 'licenses'  => "$licenses License",
                 'registrar' => Controller::userUsername($app->registrar),
                 'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
-                'price'     => "<span class='align-middle badge fw-normal text-dark fs-6' title='$raw_price$currency'>$price$currency</span>",
+                'price'     => "$price$currency",
             ];
         });
 
@@ -113,7 +110,7 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.updated');
         $errorMessage = Config::get('messages.error.validation');
 
-        parent::require_ownership(1);
+        parent::require_ownership(1, 1, 1);
 
         $request->validate([
             'edit_id' => 'required|string|min:10|max:36',
@@ -176,7 +173,7 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.deleted');
         $errorMessage = Config::get('messages.error.validation');
 
-        parent::require_ownership(1);
+        parent::require_ownership(1, 1, 1);
 
         $request->validate([
             'edit_id' => 'required|string|min:10|max:36',
@@ -203,7 +200,7 @@ class AppController extends Controller
         $successMessage = Config::get('messages.success.deleted');
         $errorMessage = Config::get('messages.error.validation');
 
-        parent::require_ownership(1);
+        parent::require_ownership(1, 1, 1);
 
         $request->validate([
             'edit_id' => 'required|string|min:10|max:36',
