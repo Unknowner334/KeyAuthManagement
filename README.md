@@ -10,6 +10,13 @@ While designed primarily for Android apps, it can also be used on **iOS, macOS, 
 
 ---
 
+## 🗝️ Default Credentials
+
+- Username: `admin`
+- Password: `admin111`
+
+---
+
 ## 📄 License
 
 Copyright © 2025 Karam (karamdev1)
