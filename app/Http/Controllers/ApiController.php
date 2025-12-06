@@ -49,9 +49,19 @@ class ApiController extends Controller
             $license->save();
         }
 
+        if ($license->owner == "") $owner = "Null"; else $owner = $license->owner;
+
+        $items = preg_split('/[\s,]+/', trim($license->devices), -1, PREG_SPLIT_NO_EMPTY);
+        $devicesCount = count($items);
+
         return response()->json([
-            'status' => 0,
-            'message' => 'Authenticated',
+            'status'      => 0,
+            'message'     => 'Authenticated',
+            'owner'       => $owner,
+            'devices'     => $devicesCount,
+            'max_devices' => $license->max_devices,
+            'expire_date' => $license->expire_date,
+            'duration'    => $license->duration,
         ]);
     }
 }

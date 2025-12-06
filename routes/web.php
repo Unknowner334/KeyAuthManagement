@@ -12,14 +12,14 @@ use App\Http\Controllers\UserController;
 // * Login
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'login_action'])->name('login.post')->middleware('throttle:10,5');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('throttle:10,5');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('throttle:50,5');
 
 // * Register
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'register_action'])->name('register.post')->middleware('throttle:10,5');
 
 // * Authenticate
-Route::get('/API/connect', [ApiController::class, 'Authenticate'])->name('api.connect')->middleware('throttle:10,5');
+Route::get('/API/connect', [ApiController::class, 'Authenticate'])->name('api.connect')->middleware('throttle:50,5');
 
 Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
     // * Dashboard

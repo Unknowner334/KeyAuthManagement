@@ -1,26 +1,39 @@
-## License Manager
+# License Manager
 
-A SaaS Safe Project that allows you to give access to your private apps to people via licenses/keys that have expire dates and devices limit, Its designed for android apps but it can be used on iOS, macOS or Windows PC's if you can get their serial numbers so that the devices limit would work without bugs.
+A SaaS-ready project that allows you to grant access to your private apps via licenses/keys. Each license can have an **expiry date** and a **device limit**.  
+While designed primarily for Android apps, it can also be used on **iOS, macOS, or Windows**, as long as you can obtain a device identifier to enforce the device limit reliably.
 
-## Project Status: Finished
+---
 
-Still Missing Last Touches
+## 🚀 Project Status
+**Finished:** December 6th, 2025
 
-## Requirements
+---
 
-```
-PHP 8.5
-Composer
-```
+## ⚙️ Requirements
 
-## Setup
+- PHP 8.5+
+- Composer
 
-```
-copy .env.example to .env
-setup your db credentials in .env
-run the following commands
+---
+
+## 🛠️ Setup
+
+1. Copy `.env.example` to `.env`  
+2. Configure your database credentials in `.env`  
+3. Run the following commands:
+
+```bash
 composer install --no-dev --optimize-autoloader
 php artisan key:generate
 php artisan migrate:fresh --seed
-and you're ready to host on nginx
-```
+
+## 📄 License
+
+Copyright © 2025 Karam (karamdev1)
+
+All rights reserved. 
+
+This software and its source code are the property of Karam Gaggi. 
+You may not copy, modify, distribute, or use this software or any of its components 
+without explicit written permission from the author.
