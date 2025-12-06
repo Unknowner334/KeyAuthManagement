@@ -10,6 +10,18 @@ While designed primarily for Android apps, it can also be used on **iOS, macOS, 
 
 ---
 
+## 📄 License
+
+Copyright © 2025 Karam (karamdev1)
+
+All rights reserved. 
+
+This software and its source code are the property of Karam Gaggi. 
+You may not copy, modify, distribute, or use this software or any of its components 
+without explicit written permission from the author.
+
+---
+
 ## ⚙️ Requirements
 
 - PHP 8.5+
@@ -27,13 +39,3 @@ While designed primarily for Android apps, it can also be used on **iOS, macOS, 
 composer install --no-dev --optimize-autoloader
 php artisan key:generate
 php artisan migrate:fresh --seed
-
-## 📄 License
-
-Copyright © 2025 Karam (karamdev1)
-
-All rights reserved. 
-
-This software and its source code are the property of Karam Gaggi. 
-You may not copy, modify, distribute, or use this software or any of its components 
-without explicit written permission from the author.
