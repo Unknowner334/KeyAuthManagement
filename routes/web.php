@@ -19,8 +19,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register_action'])->name('register.post')->middleware('throttle:10,5');
 });
 
-Route::prefix('API')->name('api.')->group(function () {
-    Route::get('/connect', [ApiController::class, 'Authenticate'])->name('connect')->middleware('throttle:50,5');
+Route::prefix('API')->name('api.')->middleware('disable.csrf')->group(function () {
+    Route::post('/connect', [ApiController::class, 'Authenticate'])->name('connect')->middleware('throttle:50,5');
 });
 
 Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {

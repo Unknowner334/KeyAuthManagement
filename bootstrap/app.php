@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'session.timeout' => \App\Http\Middleware\SessionTimeout::class,
             'no.cache' => \App\Http\Middleware\NoCache::class,
             'throttle' => \App\Http\Middleware\ThrottleWithSession::class,
+            'disable.csrf' => \App\Http\Middleware\DisableCSRF::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
