@@ -67,8 +67,6 @@ class AppHelper
                     'max:50',
                     Rule::unique('apps', 'name')->ignore($app->edit_id, 'edit_id')
                 ],
-                'price'   => 'required|integer|min:250|max:300000',
-                'status'  => 'required|in:Active,Inactive',
             ]);
 
             $app->update([

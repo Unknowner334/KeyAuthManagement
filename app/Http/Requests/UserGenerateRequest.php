@@ -14,8 +14,8 @@ class UserGenerateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => 'required|string|min:4|max:100',
-            'username' => 'required|string|min:4|max:50|unique:users,username',
+            'name'     => 'required|string|min:8|max:100',
+            'username' => 'required|string|min:8|max:50|unique:users,username',
             'password' => 'required|string|confirmed|min:8|max:50',
             'status'   => 'required|in:Active,Inactive',
             'role'     => 'required|in:Owner,Manager,Reseller',

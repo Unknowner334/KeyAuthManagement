@@ -85,8 +85,6 @@ class AppController extends Controller
     }
 
     public function appedit_action(AppEditRequest $request) {
-        require_ownership(1, 1, 1);
-
         $request->validated();
 
         return AppHelper::appEdit($request);

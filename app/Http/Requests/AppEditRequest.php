@@ -8,13 +8,15 @@ class AppEditRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return require_ownership(1, 1, 1);;
     }
 
     public function rules(): array
     {
         return [
-            'edit_id' => 'required|string|min:10|max:36',
+            'edit_id' => 'required|string|min:36|max:36',
+            'price'   => 'required|integer|min:250|max:300000',
+            'status'  => 'required|in:Active,Inactive',
         ];
     }
 }

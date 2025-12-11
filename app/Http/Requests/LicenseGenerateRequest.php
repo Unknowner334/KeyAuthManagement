@@ -14,7 +14,7 @@ class LicenseGenerateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'app'      => 'required|string|exists:apps,app_id|min:6|max:36',
+            'app'      => 'required|string|exists:apps,app_id|min:36|max:36',
             'owner'    => 'max:50',
             'duration' => 'required|integer',
             'status'   => 'required|in:Active,Inactive',

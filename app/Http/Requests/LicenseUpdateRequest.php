@@ -14,9 +14,9 @@ class LicenseUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'edit_id'  => 'required|string|min:6|max:36',
+            'edit_id'  => 'required|string|min:36|max:36',
             'license'  => 'max:50',
-            'app'      => 'required|string|exists:apps,app_id|min:6|max:36',
+            'app'      => 'required|string|exists:apps,app_id|min:36|max:36',
             'owner'    => 'max:50',
             'duration' => 'required|integer',
             'status'   => 'required|in:Active,Inactive',
