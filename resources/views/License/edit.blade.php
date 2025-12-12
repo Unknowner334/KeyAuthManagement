@@ -42,7 +42,7 @@
                                     <option value="">-- Select App --</option>
                                     @if ($apps)
                                         @foreach ($apps as $app)
-                                            @php if ($currencyPlace == 0) $price = number_format($app->price) . $currency; else $price = $currency . number_format($app->price); @endphp
+                                            @php if ($currencyPlace == 0) $price = number_format($app->price) . $currency; elseif ($currencyPlace == 2) $price = number_format($app->price) . ' ' . $currency; else $price = $currency . number_format($app->price); @endphp
                                             <option value="{{ $app->app_id }}" @if ($app->app_id == $license->app_id) selected @endif>{{ $app->name }} - {{ $price }}</option>
                                         @endforeach
                                     @endif

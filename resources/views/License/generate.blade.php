@@ -26,7 +26,7 @@
                                     @if ($apps)
                                         @foreach ($apps as $app)
                                             @php $count += 1; @endphp
-                                            @php if ($currencyPlace == 0) $price = number_format($app->price) . $currency; else $price = $currency . number_format($app->price); @endphp
+                                            @php if ($currencyPlace == 0) $price = number_format($app->price) . $currency; elseif ($currencyPlace == 2) $price = number_format($app->price) . ' ' . $currency; else $price = $currency . number_format($app->price); @endphp
                                             <option value="{{ $app->app_id }}" @if ($count == 1) selected @endif>{{ $app->name }} - {{ $price }}</option>
                                         @endforeach
                                     @endif

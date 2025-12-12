@@ -83,7 +83,7 @@ class LicenseHelper
                 'type'   => 'Create',
             ]);
 
-            $msg = str_replace(':flag', "<b>License</b> " . $license[0], $successMessage);
+            $msg = str_replace(':flag', "<b>License</b> " . $license, $successMessage);
             $msg = "
                 $msg <br>
                 <b>Saldo Cut: $saldo_cut</b> <br>
