@@ -1,9 +1,9 @@
 import './bootstrap';
 
-document.addEventListener('contextmenu', event => event.preventDefault());
-
 $(".after-card").hide();
 $(document).ready(function () {
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
     $(".after-card").fadeIn("slow");
     $("input").change(function (e) {
         e.preventDefault();
@@ -57,19 +57,21 @@ $(document).ready(function () {
         },
     });
 
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Are you sure you want to logout",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, logout'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('logoutForm').submit();
-            }
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to logout',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, logout',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logoutForm').submit();
+                }
+            });
         });
-    });
+    };
 });

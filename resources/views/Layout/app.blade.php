@@ -12,14 +12,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
-<body>
-    @if(auth()->check())
-        @include('Layout.header')
-    @else
-        @include('Layout.starter')
-    @endif
+<body class="font-sans bg-smoke">
+    @include('Layout.header')
 
-    <main>
+    <main class="fixed inset-0 flex items-center justify-center">
         @yield('content')
     </main>
 

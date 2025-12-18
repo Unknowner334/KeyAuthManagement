@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './**/*.{html,js,ts,jsx,tsx}',
+    './resources/views/**/*.blade.php',
   ],
   theme: {
     extend: {
@@ -9,6 +9,7 @@ module.exports = {
         primary: '#0d6efd',
         secondary: '#6c757d',
         dark: '#212529',
+        smoke: 'whitesmoke',
       },
       blur: {
         DEFAULT: '3px',
