@@ -8,24 +8,23 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @vite('resources/css/app.css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    @auth
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    @endauth
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans bg-smoke dark:bg-dark-1 transition-colors duration-200">
     @include('Layout.header')
 
-    <main class="flex-1 flex items-center justify-center">
-        @yield('content')
-    </main>
+    @yield('content')
 
     @include('Layout.footer')
     
-    <form action="{{ route('logout') }}" method="POST" id="logoutForm">
-        @csrf
-    </form>
-
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    @auth
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    @endauth
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.0/sweetalert2.all.min.js" integrity="sha512-0UUEaq/z58JSHpPgPv8bvdhHFRswZzxJUT9y+Kld5janc9EWgGEVGfWV1hXvIvAJ8MmsR5d4XV9lsuA90xXqUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         window.APP = {
