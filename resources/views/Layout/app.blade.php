@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     @endauth
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans bg-smoke dark:bg-dark-1 transition-colors duration-200">
     @include('Layout.header')

@@ -63,8 +63,8 @@
 
                 <div class="mb-4">
                     <button type="submit" 
-                        class="w-auto p-3 bg-transparent border border-dark-3 hover:bg-dark-3
-                            text-gray-300 rounded-lg transition-colors duration-100">
+                        class="w-auto p-3 bg-transparent border border-dark-3 hover:bg-primary hover:border-transparent
+                            text-gray-300 hover:text-white rounded-lg transition-colors duration-150">
                         <i class="bi bi-box-arrow-in-right"></i> Login
                     </button>
                 </div>

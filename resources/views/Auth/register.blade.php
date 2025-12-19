@@ -23,6 +23,17 @@
                 </div>
 
                 <div class="mb-4">
+                    <label class="block text-md text-gray-300 mb-1">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="w-full px-4 py-2 pr-10 border border-dark-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-300 bg-dark-4"
+                        placeholder="Enter your email"
+                    />
+                </div>
+
+                <div class="mb-4">
                     <label class="block text-md text-gray-300 mb-1">Password</label>
                     <div class="relative w-full">
                         <input 
@@ -87,8 +98,8 @@
 
                 <div>
                     <button type="submit" 
-                        class="w-auto p-3 bg-transparent border border-dark-3 hover:bg-dark-3
-                            text-gray-300 rounded-lg transition-colors duration-100">
+                        class="w-auto p-3 bg-transparent border border-dark-3 hover:bg-primary hover:border-transparent
+                            text-gray-300 hover:text-white rounded-lg transition-colors duration-150">
                         <i class="bi bi-person-plus"></i> Register
                     </button>
                 </div>
