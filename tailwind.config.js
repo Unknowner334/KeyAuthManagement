@@ -10,16 +10,16 @@ module.exports = {
         secondary: '#6c757d',
         dark: {
           DEFAULT: 'oklch(27.4% 0.006 286.033)',
-          '1': 'oklch(21% 0.006 285.885)',
-          '2': 'oklch(37% 0.013 285.805)',
-          '3': 'oklch(0.4347 0.006 286.033)',
-          '4': 'oklch(0.3071 0.006 286.033)',
+          border: '#e6e6e6',
+          text: '#666666',
         },
-        smoke: 'whitesmoke',
+        light: {
+          DEFAULT: 'whitesmoke',
+        },
       },
       blur: {
         DEFAULT: '3px',
-        'none': '0px',
+        none: '0px',
       },
       spacing: {
         128: '32rem',

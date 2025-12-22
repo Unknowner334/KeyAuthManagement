@@ -1,6 +1,6 @@
-<footer class="fixed bottom-0 w-full bg-white dark:bg-dark border-t border-gray-300 dark:border-dark-2 py-3 text-gray-600 dark:text-gray-300 transition-colors duration-325">
-  <div class="container mx-auto px-2 md:px-30 flex items-center justify-between h-7.5 text-[15px] md:text-[17.2px]">
-    <small>&copy; {{ date('Y') }} - {{ config('app.name') }}</small>
-    <a href="https://github.com/karamdev1/License-Manager" target="_blank" class="text-[12px] md:text-[16px]">License Manager Repo</a>
+<footer class="fixed bottom-0 w-full bg-white border-t border-dark-border py-3 text-dark-text text-[16px]">
+  <div class="mx-0 md:mx-25 lg:mx-50 px-4 flex items-center justify-between h-6.25">
+    <small class="text-[16px]">&copy; {{ date('Y') }} - {{ config('app.name') }}</small>
+    <a href="https://github.com/karamdev1/License-Manager" target="_blank">Source</a>
   </div>
 </footer>

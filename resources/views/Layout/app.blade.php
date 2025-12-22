@@ -15,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body class="min-h-screen flex flex-col font-sans bg-smoke dark:bg-dark-1 transition-colors duration-200">
+<body class="min-h-screen flex flex-col font-sans bg-light">
     @include('Layout.header')
 
     @yield('content')
