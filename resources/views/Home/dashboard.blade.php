@@ -39,6 +39,7 @@
                 licenses
             </div>
 
+            @if (auth()->user()->role != "Reseller")
             <div x-show="activePage==='users'" x-cloak>
                 users
             </div>
@@ -50,6 +51,7 @@
             <div x-show="activePage==='webui_settings'" x-cloak>
                 webui
             </div>
+            @endif
 
             <div x-show="activePage==='settings'" x-cloak>
                 settings

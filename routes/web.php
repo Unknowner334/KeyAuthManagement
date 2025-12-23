@@ -24,20 +24,12 @@ Route::prefix('API')->name('api.')->withoutMiddleware(VerifyCsrfToken::class)->g
     Route::post('/connect', [ApiController::class, 'Authenticate'])->name('connect')->middleware('throttle:25,5');
 });
 
-Route::middleware('auth', 'session.timeout', 'no.cache', 'verified')->group(function () {
+Route::middleware('session.timeout', 'no.cache', 'verified')->group(function () {
     Route::get('/', [DashController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/data', [DashController::class, 'licensedata_10'])->name('dashboard.data');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('users')->name('users.')->group(function () {
-            Route::get('/', [UserController::class, 'manageusers'])->name('index');
-            Route::get('/{id?}', [UserController::class, 'manageusersedit'])->where('id', '[0-9a-fA-F-]{36}')->name('edit');
-            Route::get('/generate', [UserController::class, 'manageusersgenerate'])->name('generate');
-            Route::get('/history/{id?}', [UserController::class, 'manageusershistoryuser'])->where('id', '[0-9a-fA-F-]{36}')->name('history.user');
-            Route::get('/wallet/{id?}', [UserController::class, 'manageuserssaldoedit'])->where('id', '[0-9a-fA-F-]{36}')->name('wallet');
-            Route::get('/data', [UserController::class, 'manageusersdata'])->name('data');
-            Route::get('/history/data/{id?}', [UserController::class, 'manageusershistorydata'])->where('id', '[0-9a-fA-F-]{36}')->name('history.data');
-
             Route::post('/', [UserController::class, 'manageusersedit_action'])->where('id', '[0-9a-fA-F-]{36}')->name('edit.post');
             Route::post('/generate', [UserController::class, 'manageusersgenerate_action'])->name('generate.post');
             Route::post('/delete', [UserController::class, 'manageusersdelete'])->name('delete');
@@ -45,9 +37,6 @@ Route::middleware('auth', 'session.timeout', 'no.cache', 'verified')->group(func
         });
 
         Route::prefix('referrables')->name('referrable.')->group(function () {
-            Route::get('/', [DashController::class, 'managereferrable'])->name('index');
-            Route::get('/{id?}', [DashController::class, 'managereferrableedit'])->where('id', '[0-9a-fA-F-]{36}')->name('edit');
-            Route::get('/generate', [DashController::class, 'managereferrablegenerate'])->name('generate');
             Route::get('/data', [DashController::class, 'managereferrabledata'])->name('data');
 
             Route::post('/update', [DashController::class, 'managereferrableedit_action'])->name('edit.post');
@@ -57,21 +46,16 @@ Route::middleware('auth', 'session.timeout', 'no.cache', 'verified')->group(func
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', [SettingController::class, 'settings'])->name('index');
         Route::post('/username-change', [SettingController::class, 'settingsusername'])->name('username');
         Route::post('/name-change', [SettingController::class, 'settingsname'])->name('name');
         Route::post('/password-change', [SettingController::class, 'settingspassword'])->name('password');
 
         Route::prefix('webui')->name('webui.')->group(function () {
-            Route::get('/', [WebuiController::class, 'webui_settings'])->name('index');
             Route::post('/', [WebuiController::class, 'webui_action'])->name('update');
         });
     });
 
     Route::prefix('apps')->name('apps.')->group(function () {
-        Route::get('/', [AppController::class, 'applist'])->name('index');
-        Route::get('/{id?}', [AppController::class, 'appedit'])->where('id', '[0-9a-fA-F-]{36}')->name('edit');
-        Route::get('/generate', [AppController::class, 'appgenerate'])->name('generate');
         Route::get('/data', [AppController::class, 'appdata'])->name('data');
 
         Route::post('/update', [AppController::class, 'appedit_action'])->name('edit.post');
@@ -82,10 +66,6 @@ Route::middleware('auth', 'session.timeout', 'no.cache', 'verified')->group(func
     });
 
     Route::prefix('licenses')->name('licenses.')->group(function () {
-        Route::get('/', [LicenseController::class, 'licenselist'])->name('index');
-        Route::get('/{id?}', [LicenseController::class, 'licenseedit'])->where('id', '[0-9a-fA-F-]{36}')->name('edit');
-        Route::get('/generate', [LicenseController::class, 'licensegenerate'])->name('generate');
-        Route::get('/data', [LicenseController::class, 'licensedata'])->name('data');
         Route::get('/resetApiKey/{id?}', [LicenseController::class, 'licenseresetapi'])->where('id', '[0-9a-fA-F-]{36}')->name('resetApiKey');
 
         Route::post('/update', [LicenseController::class, 'licenseedit_action'])->name('edit.post');
