@@ -7,17 +7,17 @@
     <title>{{ config('app.name') }} - @yield('title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     @auth
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     @endauth
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.0/sweetalert2.all.min.js" integrity="sha512-0UUEaq/z58JSHpPgPv8bvdhHFRswZzxJUT9y+Kld5janc9EWgGEVGfWV1hXvIvAJ8MmsR5d4XV9lsuA90xXqUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body class="min-h-screen flex flex-col font-sans bg-light" 
+<body class="font-sans bg-light overflow-y-hidden"
       @auth 
       x-data="{ 
           activePage: sessionStorage.getItem('activePage') || 'home',
@@ -36,8 +36,10 @@
     @vite('resources/js/app.js')
 
     @include('Layout.header')
-
-    @yield('content')
+    
+    <div class="flex min-h-screen">
+        @yield('content')
+    </div>
 
     @include('Layout.footer')
 

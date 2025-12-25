@@ -7,7 +7,7 @@
         </a>
       </div>
 
-      <div class="md:hidden">
+      <div class="lg:hidden">
         <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded hover:bg-dark-3">
             <i class="bi text-2xl" :class="sidebarOpen ? 'bi-x-lg' : 'bi-list'"></i>
         </button>
