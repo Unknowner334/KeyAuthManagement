@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './resources/views/**/*.blade.php',
   ],
@@ -32,4 +33,5 @@ module.exports = {
       },
     },
   },
+  plugins: [require('tailwind-scrollbar')],
 };
