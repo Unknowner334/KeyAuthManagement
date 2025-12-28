@@ -7,7 +7,7 @@
             x-data="{ forgot: JSON.parse(sessionStorage.getItem('forgotYourPassword') || 'false') }"
             x-init="$watch('forgot', value => sessionStorage.setItem('forgotYourPassword', value))">
         <div x-show="!forgot" x-cloak>
-            <x-card title="Login" class="w-full max-w-xs">
+            <x-card title="<p class='text-center'>Login</p>" class="w-full max-w-xs">
                 <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
                     @csrf
                     @honeypot
@@ -90,7 +90,7 @@
         </div>
 
         <div x-show="forgot" x-cloak>
-            <x-card title="Forgot Your Password?" class="w-full max-w-xs">
+            <x-card title="<p class='text-center'>Forgot Your Password?</p>" class="w-full max-w-xs">
                 <form action="{{ route('login.forgot') }}" method="POST" class="space-y-4" id="forgotPasswordForm">
                     @csrf
                     @honeypot

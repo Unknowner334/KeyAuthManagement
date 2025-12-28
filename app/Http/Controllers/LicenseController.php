@@ -15,11 +15,7 @@ use Carbon\Carbon;
 
 class LicenseController extends Controller
 {
-    public function licenselist() {
-        return view('License.list');
-    }
-
-    public function licensedata() {
+    public function licenseregistrations() {
         if (require_ownership(1, 0)) {
             $licenses = License::get();
         } else {
@@ -51,11 +47,11 @@ class LicenseController extends Controller
                 'edit_id'   => $license->edit_id,
                 'owner'     => $owner,
                 'app'       => $license->app->name,
-                'user_key'  => "<span class='align-middle badge fw-normal text-$licenseStatus fs-6 blur Blur px-3 copy-trigger' data-copy='$license->license'>$license->license</span>",
-                'devices'   => "<span class='align-middle badge fw-normal text-white bg-dark fs-6'>$devices</span>",
-                'duration'  => "<span class='align-middle badge fw-normal text-$durationC fs-6'>$duration</span>",
+                'user_key'  => "<span class='text-$licenseStatus blur Blur copy-trigger' data-copy='$license->license'>$license->license</span>",
+                'devices'   => "<span class='text-white bg-dark'>$devices</span>",
+                'duration'  => "<span class='text-$durationC'>$duration</span>",
                 'registrar' => userUsername($license->registrar),
-                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
+                'created'   => "<i class='text-gray-400'>$created</i>",
                 'price'     => "$price",
             ];
         });

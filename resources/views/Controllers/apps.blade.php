@@ -22,7 +22,7 @@
             </div>
             ";
         @endphp
-        <x-card title="{!! $appsTitle !!}">
+        <x-card title="{!! $appsTitle !!}" class="w-full">
             <div class="overflow-auto relative scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                 <table class="w-full min-w-full divide-y divide-gray-200" id="apps_table">
                     <thead class="bg-gray-50">

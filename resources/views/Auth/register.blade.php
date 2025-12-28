@@ -5,7 +5,7 @@
 @section('content')
     <main class="flex-1 flex flex-col items-center mt-15 gap-4">
         <div>
-            <x-card title="Register" class="w-full max-w-xs">
+            <x-card title="<p class='text-center'>Register</p>" class="w-full max-w-xs">
                 <form action="{{ route('login.post') }}" method="POST" class="space-y-4">
                     @csrf
                     @honeypot

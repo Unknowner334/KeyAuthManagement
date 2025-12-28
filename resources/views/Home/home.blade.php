@@ -16,7 +16,7 @@
         @endphp
         <x-card title="{!! $homeLicenseTitle !!}">
             <div class="overflow-auto relative scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-                <table class="w-full min-w-full divide-y divide-gray-200" id="licenses_table">
+                <table class="w-full min-w-full divide-y divide-gray-200" id="home_table">
                     <thead class="bg-gray-50">
                         <tr class="border border-gray-200">
                             <th class="px-6 py-3 text-left text-xs font-medium text-dark-text uppercase tracking-wider">
@@ -45,7 +45,7 @@
     </div>
 
     <div class="flex flex-col min-w-0 lg:flex-2 xl:flex-1">
-        <x-card title="Information" class="w-full max-w-xs">
+        <x-card title="<p class='text-center'>Information</p>" class="w-full max-w-xs">
             <ul class="mb-2">
                 <li class="bg-white hover:bg-gray-200 rounded-t px-5 py-2 flex justify-between align-middle border border-gray-200">
                     Name
@@ -81,7 +81,7 @@
     function initDashboardTable() {
         if (dashboard_table) return;
 
-        dashboard_table = $('#licenses_table').DataTable({
+        dashboard_table = $('#home_table').DataTable({
             processing: true,
             responsive: true,
             paging: false,

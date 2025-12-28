@@ -35,7 +35,7 @@
         </div>
 
         <div x-show="activePage==='licenses'" x-cloak>
-            licenses
+            @include('Controllers.licenses')
         </div>
 
         @if (auth()->user()->role != "Reseller")
@@ -65,6 +65,10 @@
 
             if (page === 'apps') {
                 initAppsTable();
+            }
+
+            if (page === 'licenses') {
+                initLicensesTable();
             }
         }
 
