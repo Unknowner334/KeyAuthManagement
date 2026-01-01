@@ -14,13 +14,7 @@ use App\Helpers\UserHelper;
 
 class UserController extends Controller
 {
-    public function manageusers() {
-        require_ownership(1);
-
-        return view('Home.manage_users');
-    }
-
-    public function manageusersdata() {
+    public function userregistrations() {
         require_ownership(1);
         
         $users = User::get();
@@ -45,12 +39,12 @@ class UserController extends Controller
                 'id'        => $user->id,
                 'user_id'   => $user->user_id,
                 'name'      => $user->name,
-                'username'  => "<span class='align-middle badge fw-normal text-$userStatus fs-6 blur Blur px-3 copy-trigger' data-copy='$user->username'>$user->username</span>",
-                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
-                'saldo'     => "<span class='align-middle badge fw-normal text-$saldoC fs-6'>$saldoS</span>",
-                'role'      => "<span class='align-middle badge fw-normal text-$roleC fs-6'>$user->role</span>",
+                'username'  => "<span class='text-$userStatus blur hover:blur-none transition-all duration-200 p-2 Blur copy-user' data-copy='$user->username'>$user->username</span>",
+                'created'   => "<i class='text-gray-500'>$created</i>",
+                'saldo'     => "<span class='text-$saldoC'>$saldoS</span>",
+                'role'      => "<span class='text-$roleC '>$user->role</span>",
                 'registrar' => userUsername($user->registrar),
-                'reff'      => "<span class='align-middle badge fw-normal text-$reff_status fs-6'>$reff_code</span>",
+                'reff'      => "<span class='text-$reff_status'>$reff_code</span>",
             ];
         });
 

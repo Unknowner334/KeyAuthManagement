@@ -72,6 +72,7 @@
                 licenseUpdate: "{{ route('api.licenses.update') }}",
                 licenseDelete: "{{ route('api.licenses.delete') }}",
                 licenseReset: "{{ route('api.licenses.reset') }}",
+                usersRegistrations: "{{ route('api.users.registrations') }}",
             },
             csrf: "{{ csrf_token() }}"
         };
@@ -142,6 +143,10 @@
 
             if (page === 'licenses') {
                 initLicensesTable();
+            }
+
+            if (page === 'users') {
+                initUsersTable();
             }
         }
 

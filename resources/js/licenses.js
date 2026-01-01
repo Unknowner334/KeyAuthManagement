@@ -248,7 +248,7 @@ window.updateLicense = function (id) {
 window.deleteLicense = function (id, name) {
     Swal.fire({
         icon: 'info',
-        title: 'Delete App',
+        title: 'Delete License',
         html: `Are you sure you want to delete license <b>${name}</b>?`,
         confirmButtonText: 'Delete',
         showCancelButton: true,
@@ -288,7 +288,7 @@ window.deleteLicense = function (id, name) {
 window.resetLicense = function (id, name) {
     Swal.fire({
         icon: 'info',
-        title: 'Delete App',
+        title: 'Reset License',
         html: `Are you sure you want to reset license <b>${name}</b>?`,
         confirmButtonText: 'Reset',
         showCancelButton: true,

@@ -50,6 +50,10 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
             Route::post('/update', [AppController::class, 'appupdate'])->name('update');
             Route::post('/delete', [AppController::class, 'appdelete'])->name('delete');
         });
+
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::post('/registrations', [UserController::class, 'userregistrations'])->withoutMiddleware(VerifyCsrfToken::class)->name('registrations');
+        });
     });
 });
 

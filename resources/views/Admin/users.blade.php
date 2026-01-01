@@ -2,7 +2,7 @@
     <div class="flex flex-col min-w-0 lg:w-[95%]">
         <x-card title="Users Registered" class="w-full">
             <div class="overflow-auto relative scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-                <table class="w-full min-w-full divide-y divide-gray-200" id="licenses_table">
+                <table class="w-full min-w-full divide-y divide-gray-200" id="users_table">
                     <thead class="bg-gray-50">
                         <tr class="border border-gray-200">
                             <th class="px-6 py-3 text-left text-sm font-medium text-dark-text uppercase tracking-wider">
