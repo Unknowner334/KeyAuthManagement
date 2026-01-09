@@ -73,6 +73,7 @@
                 licenseDelete: "{{ route('api.licenses.delete') }}",
                 licenseReset: "{{ route('api.licenses.reset') }}",
                 usersRegistrations: "{{ route('api.users.registrations') }}",
+                usersRegister: "{{ route('api.users.register') }}",
             },
             csrf: "{{ csrf_token() }}"
         };

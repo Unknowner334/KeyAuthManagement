@@ -39,7 +39,7 @@ class UserController extends Controller
                 'id'        => $user->id,
                 'user_id'   => $user->user_id,
                 'name'      => $user->name,
-                'username'  => "<span class='text-$userStatus blur hover:blur-none transition-all duration-200 p-2 Blur copy-user' data-copy='$user->username'>$user->username</span>",
+                'username'  => "<span class='text-$userStatus blur hover:blur-none transition-all duration-200 p-2 Blur-User copy-user' data-copy='$user->username'>$user->username</span>",
                 'created'   => "<i class='text-gray-500'>$created</i>",
                 'saldo'     => "<span class='text-$saldoC'>$saldoS</span>",
                 'role'      => "<span class='text-$roleC '>$user->role</span>",
@@ -54,98 +54,27 @@ class UserController extends Controller
         ]);
     }
 
-    public function manageusersgenerate() {
-        require_ownership(1);
-
-        return view('Home.generate_user');
-    }
-
-    public function manageusersgenerate_action(UserGenerateRequest $request) {
+    public function userregister(UserGenerateRequest $request) {
         $request->validated();
 
         return UserHelper::userGenerate($request);
     }
 
-    public function manageusersedit($id) {
-        $user = User::where('user_id', $id)->first();
-
-        if (empty($user)) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
-        }
-
-        require_ownership(1);
-
-        manager_limit($user->role);
-        psueAction($user);
-
-        return view('Home.edit_user', compact('user'));
-    }
-
-    public function manageusersedit_action(UserUpdateRequest $request) {
+    public function useredit(UserUpdateRequest $request) {
         $request->validated();
 
         return UserHelper::userEdit($request);
     }
 
-    public function manageuserssaldoedit($id) {
-        $user = User::where('user_id', $id)->first();
-
-        if (empty($user)) {
-            return back()->withErrors(['name' => str_replace(':info', 'Error Code 202', $errorMessage),])->onlyInput('name');
-        }
-
-        require_ownership();
-
-        return view('Home.wallet_user', compact('user'));
-    }
-
-    public function manageuserssaldoedit_action(UserSaldoUpdateRequest $request) {
+    public function usersaldoedit(UserSaldoUpdateRequest $request) {
         $request->validated();
 
         return UserHelper::userSaldoEdit($request);
     }
 
-    public function manageusersdelete(UserDeleteRequest $request) {
+    public function userdelete(UserDeleteRequest $request) {
         $request->validated();
 
         return UserHelper::userDelete($request);
-    }
-
-    public function manageusershistoryuser() {
-        return view('Home.history_user');
-    }
-
-    public function manageusershistorydata($id) {
-        require_ownership(1);
-        
-        $histories = UserHistory::where('user_id', $id)->get();
-
-        $data = $histories->map(function ($h) {
-            $created = Controller::timeElapsed($h->created_at);
-
-            if ($h->user_id == NULL) {
-                $user_id = "N/A";
-            } else {
-                $user_id = Controller::censorText($h->user_id, 3);
-            }
-
-            $agent = Controller::censorText($h->user_agent, 10);
-
-            return [
-                'id'        => $h->id,
-                'user_id'   => $user_id,
-                'username'  => "<span class='align-middle badge fw-normal text-dark fs-6 blur Blur px-3'>$h->username</span>",
-                'created'   => "<i class='align-middle badge fw-normal text-dark fs-6'>$created</i>",
-                'status'    => $h->status,
-                'type'      => $h->type,
-                'ip'        => $h->ip_address,
-                'agent'     => "<span class='align-middle badge fw-normal text-dark fs-6 copy-trigger' data-copy='$h->user_agent'>$agent</span>",
-            ];
-        });
-
-        return response()->json([
-            'status' => 0,
-            'data'   => $data
-        ]);
     }
 }

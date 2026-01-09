@@ -13,8 +13,9 @@ class UserHelper
         $successMessage = Config::get('messages.success.created');
         $errorMessage = Config::get('messages.error.validation');
 
+        manager_limit($request->input('role'));
+
         try {
-            manager_limit($request->input('role'));
             $username = $request->input('username');
             
             User::create([

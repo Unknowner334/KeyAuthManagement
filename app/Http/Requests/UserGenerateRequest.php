@@ -16,7 +16,7 @@ class UserGenerateRequest extends FormRequest
         return [
             'name'     => 'required|string|min:8|max:100',
             'username' => 'required|string|min:8|max:50|unique:users,username',
-            'password' => 'required|string|confirmed|min:8|max:50',
+            'password' => 'required|string|min:8|max:50',
             'status'   => 'required|in:Active,Inactive',
             'role'     => 'required|in:Owner,Manager,Reseller',
         ];

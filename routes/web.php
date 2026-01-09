@@ -53,6 +53,7 @@ Route::middleware('auth', 'session.timeout', 'no.cache')->group(function () {
 
         Route::prefix('users')->name('users.')->group(function () {
             Route::post('/registrations', [UserController::class, 'userregistrations'])->withoutMiddleware(VerifyCsrfToken::class)->name('registrations');
+            Route::post('/register', [UserController::class, 'userregister'])->name('register');
         });
     });
 });

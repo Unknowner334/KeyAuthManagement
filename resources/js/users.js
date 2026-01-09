@@ -31,6 +31,12 @@ window.initUsersTable = function () {
                 }
             }
         ],
+        columnDefs: [
+            { targets: [7, 8], searchable: false },
+            { targets: [0, 1, 2, 4], searchable: true },
+            { targets: [5, 6], visible: false, searchable: true },
+            { orderable: false, targets: -1 }
+        ],
         scrollX: true,
         stripeClasses: [],
         createdRow: function (row) {
@@ -57,37 +63,54 @@ window.createUser = function () {
     Swal.fire({
         title: 'Register User',
         html: `
-            <input type="text" id="appName" class="swal2-input" placeholder="App Name">
-            <select id="appStatus" class="swal2-input">
+            <input type="text" id="name" class="swal2-input" placeholder="Name">
+            <input type="text" id="username" class="swal2-input" placeholder="Username">
+            <input type="text" id="password" class="swal2-input" placeholder="Password">
+            <select id="status" class="swal2-input">
                 <option value="">-- Select Status --</option>
                 <option value="Active" selected>Active</option>
                 <option value="Inactive">Inactive</option>
             </select>
-            <input type="number" id="appPrice" class="swal2-input" placeholder="Price">
+            <select id="role" class="swal2-input">
+                <option value="">-- Select Role --</option>
+                <option value="Owner" class="text-red-600">Owner</option>
+                <option value="Manager" class="text-yellow-300">Manager</option>
+                <option value="Reseller" class="text-primary" selected>Reseller</option>
+            </select>
         `,
         confirmButtonText: 'Create',
         showCancelButton: true,
         cancelButtonText: 'Cancel',
         focusConfirm: false,
         preConfirm: () => {
-            const name = document.getElementById('appName').value.trim();
-            const status = document.getElementById('appStatus').value;
-            const price = document.getElementById('appPrice').value;
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const status = document.getElementById('status').value;
+            const role = document.getElementById('role').value;
 
             if (!name) {
-                Swal.showValidationMessage('App Name is required');
+                Swal.showValidationMessage('Name is required');
+                return false;
+            }
+            if (!username) {
+                Swal.showValidationMessage('Username is required');
+                return false;
+            }
+            if (!password) {
+                Swal.showValidationMessage('Password is required');
                 return false;
             }
             if (!status) {
                 Swal.showValidationMessage('Status must be selected');
                 return false;
             }
-            if (!price) {
-                Swal.showValidationMessage('Price is required');
+            if (!role) {
+                Swal.showValidationMessage('Role must be required');
                 return false;
             }
 
-            return { name, status, price };
+            return { name, username, password, status, role };
         }
     }).then((result) => {
         if (!result.isConfirmed) return;
@@ -97,7 +120,7 @@ window.createUser = function () {
         });
 
         $.ajax({
-            url: window.APP.routes.appRegister,
+            url: window.APP.routes.usersRegister,
             method: 'POST',
             data: result.value,
             headers: {
@@ -197,7 +220,7 @@ window.updateUserForm = function (id, app_id, app_name, app_status, app_price) {
     });
 };
 
-window.updateApp = function (id) {
+window.updateUser = function (id) {
     $.ajax({
         url: window.APP.routes.userData,
         method: 'POST',
@@ -273,6 +296,16 @@ $(document).ready(function () {
         const id = $(this).data('id');
         const name = $(this).data('name');
         deleteUser(id, name);
+    });
+
+    $("#blur-out-users").click(function() {
+        if ($(".Blur-User").hasClass("blur")) {
+            $(".Blur-User").removeClass("blur");
+            $("#blur-out").html(`<i class="bi bi-eye"></i>`);
+        } else {
+            $(".Blur-User").addClass("blur");
+            $("#blur-out").html(`<i class="bi bi-eye-slash"></i>`);
+        }
     });
 
     $(document).on('click', '.copy-user', async function() {
